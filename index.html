@@ -28,6 +28,9 @@
   .hero p{color:#dbe6ff;margin-top:8px;font-size:15px}
   .hero .meta{margin-top:10px;font-size:14px;color:#bcd0ff}
   .hero .right{text-align:right;min-width:230px}
+  .hero a.heroLink{display:block;position:relative;color:inherit;text-decoration:none;cursor:pointer}
+  .hero .cta{position:absolute;right:14px;bottom:14px;background:var(--gold);color:#7a1212;font-weight:800;font-size:13px;padding:8px 16px;border-radius:22px;box-shadow:0 4px 14px rgba(0,0,0,.35);display:inline-flex;align-items:center;gap:6px;transition:transform .12s}
+  .hero a.heroLink:hover .cta{transform:translateY(-2px)}
 
   .strip{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:space-between;
     background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-bottom:16px}
@@ -77,6 +80,7 @@
   .posterCard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
   .posterCard h3{font-size:13px;color:var(--muted);margin-bottom:10px;font-weight:600}
   .posterCard img{width:100%;border-radius:10px;display:block}
+  .posterCard a{display:block;cursor:pointer}
   .posterCard .ph{border:2px dashed var(--line);border-radius:10px;padding:40px 14px;color:var(--muted);font-size:13px;line-height:1.6}
 
   footer{color:var(--muted);font-size:12px;text-align:center;margin-top:8px;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
@@ -92,6 +96,7 @@
     .hero p{font-size:12.5px;margin-top:6px}
     .hero .meta{font-size:11.5px}
     .hero .right{display:none}
+    .hero .cta{font-size:11px;padding:6px 12px;right:8px;bottom:8px}
     .strip{flex-direction:column;align-items:flex-start;gap:8px;padding:11px 14px}
     .progwrap{padding:15px}
     .progwrap .head{margin-bottom:11px}
@@ -121,8 +126,9 @@
 <body>
 <div class="wrap">
 
-  <!-- HERO / PR banner -->
+  <!-- HERO / PR banner (คลิกเพื่อสมัคร) -->
   <div class="hero">
+    <a href="https://wrb12.thai.run/event/NBP" target="_blank" rel="noopener" class="heroLink" title="คลิกเพื่อสมัครเข้าร่วมกิจกรรม">
     <img class="bannerImg" src="banner.png" alt="แบนเนอร์กิจกรรม" onerror="this.style.display='none';document.getElementById('heroFb').style.display='flex'">
     <div class="fallback" id="heroFb" style="display:none">
       <div>
@@ -135,6 +141,8 @@
         <div class="badge" style="background:#ffd34d;color:#7a1212">จังหวัดหนองบัวลำภู</div>
       </div>
     </div>
+    <span class="cta">สมัครเข้าร่วมกิจกรรม →</span>
+    </a>
   </div>
 
   <!-- update status -->
@@ -204,9 +212,11 @@
 
   <!-- PR posters -->
   <div class="posterRow">
-    <div class="posterCard"><h3>โปสเตอร์ประชาสัมพันธ์</h3>
-      <img src="poster.jpg" alt="โปสเตอร์" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <div class="ph" style="display:none">วางไฟล์ <b>poster.jpg</b><br>ในโฟลเดอร์เดียวกับไฟล์นี้ เพื่อแสดงโปสเตอร์</div>
+    <div class="posterCard"><h3>โปสเตอร์ประชาสัมพันธ์ · คลิกเพื่อสมัคร</h3>
+      <a href="https://wrb12.thai.run/event/NBP" target="_blank" rel="noopener" id="posterLink" title="คลิกเพื่อสมัครเข้าร่วมกิจกรรม">
+        <img src="poster.jpg" alt="โปสเตอร์" onerror="document.getElementById('posterLink').style.display='none';document.getElementById('posterPh').style.display='block'">
+      </a>
+      <div class="ph" id="posterPh" style="display:none">วางไฟล์ <b>poster.jpg</b><br>ในโฟลเดอร์เดียวกับไฟล์นี้ เพื่อแสดงโปสเตอร์</div>
     </div>
     <div class="posterCard"><h3>วิดีโอประชาสัมพันธ์</h3>
       <video src="vdopr.mp4" autoplay muted loop playsinline controls preload="metadata"
@@ -222,13 +232,20 @@
 </div>
 
 <script>
-/* ====== DATA_START (ส่วนนี้ถูกอัปเดตอัตโนมัติทุกวัน) ====== */
+/* ====== DATA_START (ข้อมูลสำรอง ใช้เมื่อต่อข้อมูลสดไม่ได้ · ถูกอัปเดตอัตโนมัติ) ====== */
 const DATA = {
-  updatedText: "5 มิ.ย. 2569 เวลา 22:20 น.",
+  updatedText: "5 มิ.ย. 2569 เวลา 16:00 น.",
   totalTarget: 3000,
-  districts: [ {name:"เมืองหนองบัวลำภู", count:25, target:807, pop:136693}, {name:"ศรีบุญเรือง", count:11, target:645, pop:109388}, {name:"นากลาง", count:3, target:545, pop:92427}, {name:"สุวรรณคูหา", count:0, target:400, pop:67887}, {name:"โนนสัง", count:0, target:384, pop:65035}, {name:"นาวัง", count:3, target:219, pop:37200} ],
-  activity: [ {name:"เดิน", count:34}, {name:"วิ่ง", count:7}, {name:"ปั่น", count:1} ],
-  daily: [ {d:"4 มิ.ย.", count:21}, {d:"5 มิ.ย.", count:21} ]
+  districts: [
+    {name:"เมืองหนองบัวลำภู", count:25, target:807, pop:136693},
+    {name:"ศรีบุญเรือง",       count:11, target:645, pop:109388},
+    {name:"นากลาง",           count:3,  target:545, pop:92427},
+    {name:"สุวรรณคูหา",        count:0,  target:400, pop:67887},
+    {name:"โนนสัง",           count:0,  target:384, pop:65035},
+    {name:"นาวัง",            count:3,  target:219, pop:37200}
+  ],
+  activity: [ {name:"เดิน",count:34}, {name:"วิ่ง",count:7}, {name:"ปั่น",count:1} ],
+  daily:    [ {d:"4 มิ.ย.",count:21}, {d:"5 มิ.ย.",count:21} ]
 };
 /* ====== DATA_END ====== */
 
