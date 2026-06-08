@@ -259,11 +259,18 @@
 <script>
 /* ====== DATA_START (ข้อมูลสำรอง ใช้เมื่อต่อข้อมูลสดไม่ได้ · ถูกอัปเดตอัตโนมัติ) ====== */
 const DATA = {
-  updatedText: "7 มิ.ย. 2569 เวลา 14:24 น.",
+  updatedText: "5 มิ.ย. 2569 เวลา 16:00 น.",
   totalTarget: 3000,
-  districts: [ {name:"เมืองหนองบัวลำภู", count:32, target:900, pop:136693}, {name:"ศรีบุญเรือง", count:11, target:500, pop:109388}, {name:"นากลาง", count:3, target:500, pop:92427}, {name:"สุวรรณคูหา", count:1, target:400, pop:67887}, {name:"โนนสัง", count:0, target:400, pop:65035}, {name:"นาวัง", count:3, target:300, pop:37200} ],
-  activity: [ {name:"เดิน", count:40}, {name:"วิ่ง", count:9}, {name:"ปั่น", count:1} ],
-  daily: [ {d:"4 มิ.ย.", count:21}, {d:"5 มิ.ย.", count:21}, {d:"6 มิ.ย.", count:4}, {d:"7 มิ.ย.", count:4} ]
+  districts: [
+    {name:"เมืองหนองบัวลำภู", count:25, target:900, pop:136693},
+    {name:"ศรีบุญเรือง",       count:11, target:500, pop:109388},
+    {name:"นากลาง",           count:3,  target:500, pop:92427},
+    {name:"สุวรรณคูหา",        count:0,  target:400, pop:67887},
+    {name:"โนนสัง",           count:0,  target:400, pop:65035},
+    {name:"นาวัง",            count:3,  target:300, pop:37200}
+  ],
+  activity: [ {name:"เดิน",count:34}, {name:"วิ่ง",count:7}, {name:"ปั่น",count:1} ],
+  daily:    [ {d:"4 มิ.ย.",count:21}, {d:"5 มิ.ย.",count:21} ]
 };
 /* ====== DATA_END ====== */
 
@@ -290,10 +297,13 @@ function thStamp(dt){const p=n=>String(n).padStart(2,'0');return `${dt.getDate()
 function fromLive(live){
   const rmap=Object.fromEntries((live.districts||[]).map(d=>[d.name,d.count]));
   const amap=Object.fromEntries((live.activity||[]).map(a=>[a.name,a.count]));
+  const known=TARGETS.map(t=>t[0]);
+  const districts=TARGETS.map(([n,t,p])=>({name:n,label:'อำเภอ'+n,count:rmap[n]||0,target:t,pop:p}));
+  (live.districts||[]).forEach(d=>{ if(!known.includes(d.name)) districts.push({name:d.name,label:d.name,count:d.count,target:0,pop:0}); });
   return {
     updatedText: thStamp(new Date()),
     totalTarget: 3000,
-    districts: TARGETS.map(([n,t,p])=>({name:n,count:rmap[n]||0,target:t,pop:p})),
+    districts,
     activity: ['เดิน','วิ่ง','ปั่น'].map(n=>({name:n,count:amap[n]||0})),
     daily: (live.daily||[]).map(d=>{const dt=new Date(d.date+'T00:00:00Z');return {d:`${dt.getUTCDate()} ${TH[dt.getUTCMonth()+1]}`,count:d.count};})
   };
@@ -325,7 +335,7 @@ function render(D){
     const p=r.target? r.count/r.target*100:0;
     const tr=document.createElement('tr');
     if(r.count===0) tr.className='tag0';
-    tr.innerHTML=`<td><span class="rank">${i+1}</span></td><td>อำเภอ${r.name}</td><td class="num">${r.count}</td><td class="num">${r.target.toLocaleString()}</td><td class="num">${p.toFixed(1)}%<div class="mini"><i style="width:${Math.min(Math.max(p,1.5),100)}%;background:${palette[i%palette.length]}"></i></div></td>`;
+    tr.innerHTML=`<td><span class="rank">${i+1}</span></td><td>${r.label||('อำเภอ'+r.name)}</td><td class="num">${r.count}</td><td class="num">${r.target.toLocaleString()}</td><td class="num">${p.toFixed(1)}%<div class="mini"><i style="width:${Math.min(Math.max(p,1.5),100)}%;background:${palette[i%palette.length]}"></i></div></td>`;
     tb.appendChild(tr);
   });
   document.querySelector('tfoot td:nth-child(3)').textContent=total;
