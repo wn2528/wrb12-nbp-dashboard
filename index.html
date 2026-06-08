@@ -201,7 +201,7 @@
   <!-- เยาวชน/ผู้ใหญ่ รายอำเภอ (สด จาก export) -->
   <div class="panel" style="margin-bottom:16px">
     <h2><span class="dot" style="background:var(--red)"></span>เปรียบเทียบ เยาวชน / ผู้ใหญ่ รายอำเภอ</h2>
-    <div class="note" id="yaNote">เยาวชน = ค่าสมัคร 240 บาท (อายุ ≤ 18) · ผู้ใหญ่ = 360 บาท · นับจากผู้ลงทะเบียนรายคน</div>
+    <div class="note" id="yaNote">เยาวชน = ค่าสมัคร 240 บาท (อายุ ≤ 18) · ผู้ใหญ่ = ส่วนที่เหลือของยอดอำเภอ · ยอดรวมตรงกับยอดจังหวัด</div>
     <div class="chartbox"><canvas id="yaChart"></canvas></div>
     <table style="margin-top:14px"><thead><tr><th>อำเภอ</th><th class="num">เยาวชน</th><th class="num">ผู้ใหญ่</th><th class="num">รวม</th></tr></thead><tbody id="yaTbody"></tbody></table>
   </div>
@@ -257,7 +257,7 @@ const DATA = {
   daily:    [ {d:"4 มิ.ย.",count:21}, {d:"5 มิ.ย.",count:21} ],
   national: { total:13011, nbpRank:29, provinceCount:102, nbpCount:88 },
   region8: { total:817, provinces:[{name:"เลย",count:329},{name:"อุดรธานี",count:238},{name:"หนองบัวลำภู",count:87},{name:"สกลนคร",count:66},{name:"นครพนม",count:55},{name:"หนองคาย",count:42},{name:"บึงกาฬ",count:0}] },
-  youthAdult:[{district:"เมืองหนองบัวลำภู",youth:0,adult:65},{district:"ศรีบุญเรือง",youth:0,adult:17},{district:"นากลาง",youth:0,adult:4},{district:"สุวรรณคูหา",youth:0,adult:2},{district:"โนนสัง",youth:0,adult:3},{district:"นาวัง",youth:0,adult:3},{district:"อื่น ๆ",youth:1,adult:1}]
+  youthAdult:[{district:"เมืองหนองบัวลำภู",youth:0},{district:"ศรีบุญเรือง",youth:0},{district:"นากลาง",youth:0},{district:"สุวรรณคูหา",youth:0},{district:"โนนสัง",youth:0},{district:"นาวัง",youth:0},{district:"สมัครมาจากจังหวัดอื่น",youth:1}]
 };
 /* ====== DATA_END ====== */
 
@@ -344,14 +344,19 @@ function render(D){
   }
 
   drawCharts(D);
-  renderYA(D.youthAdult);
+  renderYA(D);
 }
 
-function renderYA(ya){
-  if(!ya||!ya.length) return;
-  const labels=ya.map(x=>x.district), youth=ya.map(x=>x.youth), adult=ya.map(x=>x.adult);
-  let ty=0,ta=0; const rows=[];
-  ya.forEach(x=>{ ty+=x.youth; ta+=x.adult; rows.push(`<tr><td>${x.district}</td><td class="num">${x.youth}</td><td class="num">${x.adult}</td><td class="num">${x.youth+x.adult}</td></tr>`); });
+function renderYA(D){
+  const ya=D.youthAdult||[];
+  if(!ya.length) return;
+  const ymap=Object.fromEntries(ya.map(x=>[x.district,x.youth]));
+  const labels=[],youth=[],adult=[],rows=[]; let ty=0,ta=0;
+  D.districts.forEach(d=>{
+    const y=Math.min(ymap[d.name]||0, d.count); const a=d.count-y;
+    labels.push(d.name); youth.push(y); adult.push(a); ty+=y; ta+=a;
+    rows.push(`<tr><td>${d.label||('อำเภอ'+d.name)}</td><td class="num">${y}</td><td class="num">${a}</td><td class="num">${d.count}</td></tr>`);
+  });
   rows.push(`<tr style="font-weight:800"><td>รวม</td><td class="num">${ty}</td><td class="num">${ta}</td><td class="num">${ty+ta}</td></tr>`);
   document.getElementById('yaTbody').innerHTML=rows.join('');
   if(chYA)chYA.destroy();
