@@ -348,8 +348,8 @@ function render(D){
 }
 
 function renderYA(D){
+  if(!D.districts||!D.districts.length) return;
   const ya=D.youthAdult||[];
-  if(!ya.length) return;
   const ymap=Object.fromEntries(ya.map(x=>[x.district,x.youth]));
   const labels=[],youth=[],adult=[],rows=[]; let ty=0,ta=0;
   D.districts.forEach(d=>{
