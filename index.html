@@ -224,7 +224,11 @@
   </div>
 
   <footer>
-    <a class="stafflink" href="https://wrb12-report.werayutminer.workers.dev" target="_blank" rel="noopener">🔒 สำหรับเจ้าหน้าที่เท่านั้น · รายงานรายชื่อผู้สมัคร (เข้าระบบด้วยรหัส)</a>
+    <a class="stafflink" href="https://wrb12-report.werayutminer.workers.dev" target="_blank" rel="noopener">🔒 สำหรับเจ้าหน้าที่เท่านั้น</a><br>
+    จัดทำโดย กลุ่มงานส่งเสริมสุขภาพ และกลุ่มงานสุขภาพดิจิทัล<br>
+    สำนักงานสาธารณสุขจังหวัดหนองบัวลำภู<br>
+    ที่มาข้อมูลผู้สมัคร: ระบบหลังบ้าน WRB12 จังหวัดหนองบัวลำภู<br>
+    © 2569 สำนักงานสาธารณสุขจังหวัดหนองบัวลำภู สงวนลิขสิทธิ์
   </footer>
 </div>
 
@@ -270,11 +274,18 @@ function fromLive(live){
   const known=TARGETS.map(t=>t[0]);
   const districts=TARGETS.map(([n,t,p])=>({name:n,label:'อำเภอ'+n,count:rmap[n]||0,target:t,pop:p}));
   (live.districts||[]).forEach(d=>{ if(!known.includes(d.name)) districts.push({name:d.name,label:d.name,count:d.count,target:0,pop:0}); });
+  // ให้ยอด "หนองบัวลำภู" ในกราฟเขต 8 ตรงกับยอดรวมจังหวัด (แหล่งเดียวกัน)
+  const nbpTotal=districts.reduce((s,d)=>s+d.count,0);
+  let region8=live.region8;
+  if(region8&&region8.provinces){
+    const provinces=region8.provinces.map(p=>p.name==='หนองบัวลำภู'?{...p,count:nbpTotal}:p);
+    region8={total:provinces.reduce((s,p)=>s+p.count,0),provinces};
+  }
   return {
     updatedText: thStamp(new Date()), totalTarget: 3000, districts,
     activity: ['เดิน','วิ่ง','ปั่น'].map(n=>({name:n,count:amap[n]||0})),
     daily: (live.daily||[]).map(d=>{const dt=new Date(d.date+'T00:00:00Z');return {d:`${dt.getUTCDate()} ${TH[dt.getUTCMonth()+1]}`,count:d.count};}),
-    national: live.national, region8: live.region8
+    national: live.national, region8
   };
 }
 
