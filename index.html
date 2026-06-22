@@ -277,7 +277,7 @@ const TARGETS=[["เมืองหนองบัวลำภู",900,136693],[
 const TH=['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 const palette=[C.blue,C.sky,C.green,C.gold,C.purple,C.red,C.muted];
 const liveOn = API_URL && API_URL!=="PASTE_WORKER_URL_HERE";
-let chD,chA,chDay,chR8,chYA;
+let chD,chA,chDay,chR8,chYA,lastD=DATA;
 
 function thStamp(dt){const p=n=>String(n).padStart(2,'0');return `${dt.getDate()} ${TH[dt.getMonth()+1]} ${dt.getFullYear()+543} เวลา ${p(dt.getHours())}:${p(dt.getMinutes())} น.`;}
 function fmt(n){return Number(n||0).toLocaleString();}
@@ -304,6 +304,7 @@ function fromLive(live){
 }
 
 function render(D){
+  lastD=D;
   const total=D.districts.reduce((s,d)=>s+d.count,0);
   const TT=D.totalTarget, pct=TT?total/TT*100:0;
   const active=D.districts.filter(d=>d.count>0&&d.target>0).length;
@@ -416,35 +417,77 @@ window.refreshDash=refreshDash;
 
 function exportSummary(){
   if(typeof html2canvas==='undefined'){ alert('กำลังโหลดเครื่องมือ ลองใหม่อีกครั้ง'); return; }
-  const tbl=document.querySelector('#districtPanel table').outerHTML;
+  const D=lastD||DATA;
   const now=new Date();
   const FM=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
   const p=n=>String(n).padStart(2,'0');
   const be=now.getFullYear()+543;
-  const fullWhen=`${now.getDate()} ${FM[now.getMonth()]} ${be} เวลา ${p(now.getHours())}:${p(now.getMinutes())} น.`;
+  const dstr=`${now.getDate()} ${FM[now.getMonth()]} ${be}`;
+  const tstr=`${p(now.getHours())}.${p(now.getMinutes())}`;
   const fname=`wrb12_${be}${p(now.getMonth()+1)}${p(now.getDate())}_${p(now.getHours())}${p(now.getMinutes())}.jpg`;
+  const f=n=>Number(n||0).toLocaleString();
+  const districts=D.districts||[];
+  const totalCount=districts.reduce((s,d)=>s+d.count,0);
+  const totalTarget=3000;
+  const totPct=totalTarget?totalCount/totalTarget*100:0;
+  let r8rank='–';
+  if(D.region8&&D.region8.provinces){const s=[...D.region8.provinces].sort((a,b)=>b.count-a.count);const i=s.findIndex(x=>x.name==='หนองบัวลำภู');if(i>=0)r8rank=i+1;}
+  const natRank=(D.national&&typeof D.national==='object'&&D.national.nbpRank)?D.national.nbpRank:'–';
+  const rowHtml=districts.map(d=>{
+    const hasT=d.target>0; const pct=hasT?d.count/d.target*100:0;
+    const bar=hasT?`<div style="height:13px;background:#dbe6f3;border-radius:8px;overflow:hidden;flex:1"><div style="height:100%;width:${Math.min(Math.max(pct,2),100)}%;background:linear-gradient(90deg,#1f5fa8,#3b82d6);border-radius:8px"></div></div>`:`<div style="flex:1"></div>`;
+    return `<tr><td style="padding:9px 14px;font-weight:600;color:#13235f">${d.label||('อำเภอ'+d.name)}</td>`+
+      `<td style="padding:9px 14px;text-align:center;font-weight:700;color:#e8721c">${hasT?f(d.target):'–'}</td>`+
+      `<td style="padding:9px 14px;text-align:center;font-weight:800;color:#1f5fa8;font-size:17px">${f(d.count)}</td>`+
+      `<td style="padding:9px 14px"><div style="display:flex;align-items:center;gap:8px">${bar}<b style="color:#13235f;min-width:48px;text-align:right">${hasT?pct.toFixed(1)+'%':'–'}</b></div></td></tr>`;
+  }).join('');
   const card=document.createElement('div');
-  card.style.cssText="position:fixed;left:-9999px;top:0;width:760px;background:#fff;color:#16213f;padding:24px;font-family:'Noto Sans Thai',sans-serif";
+  card.style.cssText="position:fixed;left:-9999px;top:0;width:1000px;background:#eef2f7;font-family:'Noto Sans Thai',sans-serif;color:#13235f";
   card.innerHTML=`
-    <img src="header-export.png" style="width:100%;display:block;border-radius:8px" crossorigin="anonymous" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <div style="display:none;font-size:20px;font-weight:800;color:#13235f;text-align:center;padding:12px 0">โครงการแสงนำใจไทยทั้งชาติ เดิน วิ่ง ปั่น ป้องกันอัมพาต ครั้งที่ 12 เฉลิมพระเกียรติ<br>จังหวัดหนองบัวลำภู</div>
-    <div style="font-size:18px;font-weight:800;color:#13235f;margin:18px 0 12px;display:flex;align-items:center;gap:8px"><span style="width:9px;height:18px;border-radius:3px;background:#1d54c4;display:inline-block"></span>ตารางสรุปผู้สมัครรายอำเภอ</div>
-    ${tbl}
-    <div style="margin-top:16px;border-top:1px solid #e2e8f0;padding-top:12px;font-size:12.5px;color:#5e6b85;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px">
-      <span>จัดทำโดย กลุ่มงานส่งเสริมสุขภาพ และกลุ่มงานสุขภาพดิจิทัล สำนักงานสาธารณสุขจังหวัดหนองบัวลำภู</span>
-      <span><b style="color:#16213f">ข้อมูล ณ ${fullWhen}</b></span>
+    <div style="background:linear-gradient(100deg,#0e5a34,#1c8048);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <div style="color:#fff">
+        <div style="font-size:21px;font-weight:800;line-height:1.3">สรุปผลการรับสมัครโครงการ<span style="color:#ffd34d">แสงนำใจไทยทั้งชาติ</span> เดิน วิ่ง ปั่น ป้องกันอัมพาต</div>
+        <div style="font-size:17px;font-weight:700;margin-top:2px">ครั้งที่ 12 เฉลิมพระเกียรติ จังหวัดหนองบัวลำภู</div>
+        <div style="font-size:14px;margin-top:5px;color:#d7f0df">วันที่ ${dstr} เวลา ${tstr} น.</div>
+      </div>
+      <div style="background:#fff;border-radius:10px;padding:9px 13px;text-align:center;flex-shrink:0;line-height:1.05">
+        <div style="font-size:13px;font-weight:900;color:#1d54c4;letter-spacing:1px">WALK<br>RUN<br>BIKE <span style="color:#e2342d">12</span></div>
+      </div>
+    </div>
+    <div style="padding:18px 22px 22px">
+      <table style="width:100%;border-collapse:separate;border-spacing:0 5px">
+        <thead><tr>
+          <th style="background:#e8721c;color:#fff;padding:11px 14px;text-align:left;border-radius:8px 0 0 8px;font-size:15px">อำเภอ / พื้นที่</th>
+          <th style="background:#e8721c;color:#fff;padding:11px 14px;font-size:15px">🎯 เป้าหมาย</th>
+          <th style="background:#1f5fa8;color:#fff;padding:11px 14px;font-size:15px">ยอดลงทะเบียน</th>
+          <th style="background:#e8721c;color:#fff;padding:11px 14px;border-radius:0 8px 8px 0;font-size:15px">📈 % ความสำเร็จ</th>
+        </tr></thead>
+        <tbody style="background:#fff">${rowHtml}
+          <tr style="background:#cfe0f3">
+            <td style="padding:12px 14px;font-weight:900;border-radius:8px 0 0 8px">รวมทั้งหมด</td>
+            <td style="padding:12px 14px;text-align:center;font-weight:900;color:#e8721c">${f(totalTarget)}</td>
+            <td style="padding:12px 14px;text-align:center;font-weight:900;color:#1f5fa8;font-size:18px">${f(totalCount)}</td>
+            <td style="padding:12px 14px;border-radius:0 8px 8px 0"><div style="display:flex;align-items:center;gap:8px"><div style="height:13px;background:#b9cfe8;border-radius:8px;overflow:hidden;flex:1"><div style="height:100%;width:${Math.min(Math.max(totPct,2),100)}%;background:#0f5132;border-radius:8px"></div></div><b style="min-width:48px;text-align:right">${totPct.toFixed(1)}%</b></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="display:flex;gap:16px;margin-top:16px">
+        <div style="flex:1;background:linear-gradient(100deg,#13235f,#1d54c4);border-radius:14px;padding:15px 20px;color:#fff;display:flex;align-items:center;gap:12px">
+          <span style="font-size:34px">🥇</span><div><div style="font-size:25px;font-weight:900;line-height:1">อันดับที่ ${r8rank}</div><div style="font-size:14px;color:#cfe0ff">ของเขตสุขภาพที่ 8</div></div>
+        </div>
+        <div style="flex:1;background:linear-gradient(100deg,#b5560a,#ed7d22);border-radius:14px;padding:15px 20px;color:#fff;display:flex;align-items:center;gap:12px">
+          <span style="font-size:34px">🥇</span><div><div style="font-size:25px;font-weight:900;line-height:1">อันดับที่ ${natRank}</div><div style="font-size:14px;color:#ffe9cf">ของประเทศ</div></div>
+        </div>
+      </div>
+      <div style="margin-top:14px;font-size:12px;color:#5e6b85;text-align:right">จัดทำโดย กลุ่มงานส่งเสริมสุขภาพ และกลุ่มงานสุขภาพดิจิทัล สำนักงานสาธารณสุขจังหวัดหนองบัวลำภู</div>
     </div>`;
   document.body.appendChild(card);
-  card.querySelectorAll('th,td').forEach(e=>{e.style.color='#16213f';e.style.borderColor='#e2e8f0';});
-  card.querySelectorAll('th').forEach(e=>{e.style.background='#eef3fb';});
-  card.querySelectorAll('.rank').forEach(e=>{e.style.background='#eef3fb';e.style.color='#13235f';});
-  card.querySelectorAll('tr').forEach(e=>e.style.opacity='1');
   setTimeout(()=>{
-    html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:true,allowTaint:true}).then(cv=>{
+    html2canvas(card,{scale:2,backgroundColor:'#eef2f7',useCORS:true}).then(cv=>{
       const a=document.createElement('a');a.href=cv.toDataURL('image/jpeg',0.95);a.download=fname;a.click();
       document.body.removeChild(card);
     }).catch(e=>{ document.body.removeChild(card); alert('ส่งออกไม่สำเร็จ: '+e); });
-  }, 300);
+  },150);
 }
 window.exportSummary=exportSummary;
 
