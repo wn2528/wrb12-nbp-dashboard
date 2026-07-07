@@ -8,3 +8,10 @@
 !/sitemap.xml
 !/robots.txt
 !/googled76008b4928c4803.html
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
