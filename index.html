@@ -1,0 +1,500 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- utf8-clean-rebuild -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>หนองบัวลำภูส่งเสริมสุขภาพดี · แดชบอร์ดผู้สมัคร เดิน วิ่ง ปั่น ครั้งที่ 12</title>
+<meta name="description" content="โครงการหนองบัวลำภูส่งเสริมสุขภาพดี — แดชบอร์ดผู้สมัครกิจกรรมเดิน วิ่ง ปั่น ป้องกันอัมพาต ครั้งที่ 12 จังหวัดหนองบัวลำภู ติดตามรายอำเภอ เขตสุขภาพที่ 8 และระดับประเทศแบบเรียลไทม์">
+<link rel="canonical" href="https://xn--22cja7cvah4ancivvz8bbcf1b4ewaj3b4a0er8poi5e.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="หนองบัวลำภูส่งเสริมสุขภาพดี">
+<meta property="og:title" content="หนองบัวลำภูส่งเสริมสุขภาพดี · เดิน วิ่ง ปั่น ครั้งที่ 12">
+<meta property="og:description" content="ติดตามจำนวนผู้สมัครรายอำเภอ เขตสุขภาพที่ 8 และระดับประเทศแบบเรียลไทม์ และสมัครเข้าร่วมกิจกรรม จังหวัดหนองบัวลำภู">
+<meta property="og:url" content="https://xn--22cja7cvah4ancivvz8bbcf1b4ewaj3b4a0er8poi5e.com/">
+<meta property="og:image" content="https://xn--22cja7cvah4ancivvz8bbcf1b4ewaj3b4a0er8poi5e.com/banner.png">
+<meta property="og:locale" content="th_TH">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{
+    --bg1:#eaf1ff; --bg2:#f7f9ff; --card:#ffffff; --card2:#f1f5fc; --line:#d8e2f3;
+    --navy:#13235f; --blue:#1d54c4; --sky:#2f8fe0; --red:#d8232a; --gold:#e6a017;
+    --green:#1f9d57; --purple:#7b61ff;
+    --ink:#16213f; --muted:#5e6b85;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Noto Sans Thai',sans-serif;color:var(--ink);min-height:100vh;padding:20px;
+    background:linear-gradient(180deg,var(--bg1) 0%,var(--bg2) 320px,#fff 100%)}
+  .wrap{max-width:1200px;margin:0 auto}
+  .brandbar{font-size:14px;font-weight:800;color:var(--navy);letter-spacing:.3px;margin-bottom:10px;display:flex;align-items:center;gap:9px}
+  .brandbar::before{content:"";width:7px;height:18px;border-radius:3px;background:linear-gradient(var(--red),var(--blue))}
+
+  .hero{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);margin-bottom:16px;box-shadow:0 8px 24px rgba(20,40,90,.10);
+    background:linear-gradient(120deg,#0c2a6b 0%,#123a8f 38%,#c01f1a 100%)}
+  .hero a.heroLink{display:block;position:relative;color:inherit;text-decoration:none;cursor:pointer}
+  .hero .bannerImg{width:100%;height:auto;display:block}
+  .hero .cta{position:absolute;right:14px;bottom:14px;background:var(--gold);color:#5a2207;font-weight:800;font-size:13px;padding:8px 16px;border-radius:22px;box-shadow:0 4px 14px rgba(0,0,0,.3);display:inline-flex;align-items:center;gap:6px;transition:transform .12s}
+  .hero a.heroLink:hover .cta{transform:translateY(-2px)}
+  .hero .fallback{padding:30px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;color:#fff}
+  .badge{background:#fff;color:var(--blue);font-weight:900;border-radius:12px;padding:8px 14px;font-size:13px;letter-spacing:1px;display:inline-flex;gap:8px;align-items:center}
+  .badge b{color:var(--red)}
+  .hero h1{font-size:30px;font-weight:900;line-height:1.15;color:#fff}
+  .hero h1 .y{color:var(--gold)}
+  .hero p{color:#dbe6ff;margin-top:8px;font-size:15px}
+  .hero .meta{margin-top:10px;font-size:14px;color:#bcd0ff}
+  .hero .right{text-align:right;min-width:230px}
+
+  .strip{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-bottom:16px;box-shadow:0 4px 14px rgba(20,40,90,.06)}
+  .strip .upd{font-size:13px;color:var(--muted)}
+  .strip .upd b{color:var(--blue)}
+  .strip .right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .strip .auto{font-size:12px;color:var(--green);background:rgba(31,157,87,.10);border:1px solid rgba(31,157,87,.35);border-radius:20px;padding:5px 12px}
+  .strip .refresh{font-family:inherit;cursor:pointer;font-size:13px;font-weight:700;color:#fff;background:linear-gradient(90deg,var(--blue),var(--sky));border:none;border-radius:20px;padding:7px 16px;transition:transform .1s,box-shadow .2s}
+  .strip .refresh:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(47,143,224,.35)}
+
+  .progwrap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:16px;box-shadow:0 4px 14px rgba(20,40,90,.06)}
+  .progwrap .head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .progwrap .head .l{font-size:15px;color:var(--muted)}
+  .progwrap .head .big{font-size:40px;font-weight:900;line-height:1;color:var(--navy)}
+  .progwrap .head .big span{font-size:18px;color:var(--muted);font-weight:600}
+  .progwrap .head .pct{font-size:30px;font-weight:900;color:var(--red)}
+  .track{height:26px;border-radius:14px;background:#eef2fa;border:1px solid var(--line);overflow:hidden}
+  .fill{height:100%;border-radius:14px;background:linear-gradient(90deg,var(--blue),var(--sky),var(--red));min-width:8px;transition:width .8s}
+  .progwrap .foot{margin-top:10px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+  .progwrap .foot b{color:var(--ink)}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;position:relative;overflow:hidden;box-shadow:0 4px 14px rgba(20,40,90,.06)}
+  .kpi .bar{position:absolute;left:0;top:0;bottom:0;width:5px}
+  .kpi .lbl{color:var(--muted);font-size:13px}
+  .kpi .val{font-size:26px;font-weight:900;margin-top:6px;line-height:1;color:var(--navy)}
+  .kpi .sub{font-size:12px;color:var(--muted);margin-top:5px}
+
+  .grid{display:grid;grid-template-columns:1.45fr 1fr;gap:14px;margin-bottom:16px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 4px 14px rgba(20,40,90,.06)}
+  .panel h2{font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:var(--navy)}
+  .panel h2 .dot{width:9px;height:9px;border-radius:50%}
+  .chartbox{position:relative;height:300px}
+  .chartbox.sm{height:240px}
+  .note{font-size:12px;color:var(--muted);margin:-6px 0 12px}
+
+  .scale{background:linear-gradient(120deg,#13235f,#1d54c4);color:#fff;border:none}
+  .scale.red{background:linear-gradient(120deg,#a3161c,#d8232a)}
+  .scale .bignum{font-size:44px;font-weight:900;line-height:1}
+  .scale .biglbl{font-size:14px;color:#dce6ff;margin-top:6px}
+  .scale.red .biglbl{color:#ffe1e1}
+  .scale .r8note{margin-top:10px;font-size:12.5px;color:#ffe9b8}
+  .scale .r8note b{color:#fff}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left}
+  th{color:var(--muted);font-weight:700;font-size:12px;background:var(--card2)}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr:last-child td{border-bottom:none}
+  .rank{display:inline-flex;width:22px;height:22px;border-radius:6px;background:var(--card2);align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--navy)}
+  .mini{height:7px;border-radius:4px;background:#eef2fa;overflow:hidden;margin-top:4px}
+  .mini i{display:block;height:100%;border-radius:4px}
+  .tag0{opacity:.55}
+
+  .posterRow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+  .posterCard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center;box-shadow:0 4px 14px rgba(20,40,90,.06)}
+  .posterCard h3{font-size:13px;color:var(--muted);margin-bottom:10px;font-weight:600}
+  .posterCard a{display:block;cursor:pointer}
+  .posterCard img{width:100%;border-radius:10px;display:block}
+  .posterCard .ph{border:2px dashed var(--line);border-radius:10px;padding:40px 14px;color:var(--muted);font-size:13px;line-height:1.6}
+
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:8px;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .stafflink{display:inline-block;margin-bottom:12px;color:var(--blue);font-size:12.5px;font-weight:600;text-decoration:none;border:1px solid var(--line);border-radius:22px;padding:8px 18px;transition:background .15s}
+  .stafflink:hover{background:var(--card2)}
+  @media(max-width:860px){ .grid,.grid2,.posterRow{grid-template-columns:1fr} .hero h1{font-size:23px} }
+  @media(max-width:600px){
+    body{padding:11px}
+    .hero .fallback{padding:18px 15px}.hero h1{font-size:18px}.hero .right{display:none}
+    .hero .cta{font-size:11px;padding:6px 12px;right:8px;bottom:8px}
+    .strip{flex-direction:column;align-items:flex-start;gap:8px}
+    .progwrap .head .big{font-size:27px}.progwrap .head .pct{font-size:22px}.track{height:20px}
+    .kpis{grid-template-columns:repeat(2,1fr);gap:10px}.kpi .val{font-size:20px}.kpi .val[style]{font-size:14px !important}
+    .chartbox{height:255px}.chartbox.sm{height:210px}
+    .scale .bignum{font-size:34px}
+    table{font-size:12px}th,td{padding:7px 5px}
+  }
+  @media(max-width:380px){ .kpis{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="brandbar">หนองบัวลำภูส่งเสริมสุขภาพดี</h1>
+
+  <!-- HERO / PR banner (คลิกเพื่อสมัคร) -->
+  <div class="hero">
+    <a href="https://wrb12.thai.run/event/NBP" target="_blank" rel="noopener" class="heroLink" title="คลิกเพื่อสมัครเข้าร่วมกิจกรรม">
+    <img class="bannerImg" src="banner.png" alt="แบนเนอร์กิจกรรม" onerror="this.style.display='none';document.getElementById('heroFb').style.display='flex'">
+    <div class="fallback" id="heroFb" style="display:none">
+      <div>
+        <span class="badge">WALK <b>RUN</b> BIKE <b>12</b> · FIGHTING STROKE</span>
+        <h1 style="margin-top:14px">เดิน วิ่ง ปั่น ป้องกันอัมพาต<br>ครั้งที่ <span class="y">12</span> เฉลิมพระเกียรติ</h1>
+        <p>ขอเชิญชาวจังหวัดหนองบัวลำภู ร่วมกิจกรรม อาทิตย์ที่ 1 พฤศจิกายน 2569</p>
+        <div class="meta">เวลา 05.00 น. ณ สนามสมเด็จพระนเรศวรมหาราช · รับสมัคร 4 มิ.ย. – 31 ส.ค. 2569</div>
+      </div>
+      <div class="right"><div class="badge" style="background:#ffd34d;color:#7a1212">จังหวัดหนองบัวลำภู</div></div>
+    </div>
+    <span class="cta">สมัครเข้าร่วมกิจกรรม →</span>
+    </a>
+  </div>
+
+  <!-- update status -->
+  <div class="strip">
+    <div class="upd">อัปเดตข้อมูลล่าสุด: <b id="updTime">—</b></div>
+    <div class="right">
+      <button class="refresh" onclick="refreshDash()">⟳ รีเฟรชข้อมูล</button>
+      <div class="auto" id="autoBadge">● เชื่อมต่อข้อมูล…</div>
+    </div>
+  </div>
+
+  <!-- overall progress to 3000 -->
+  <div class="progwrap">
+    <div class="head">
+      <div><div class="l">ความคืบหน้าเป้าหมายทั้งจังหวัด</div>
+        <div class="big" id="totNow">— <span>/ 3,000 คน</span></div></div>
+      <div class="pct" id="totPct">—</div>
+    </div>
+    <div class="track"><div class="fill" id="totFill" style="width:0%"></div></div>
+    <div class="foot">
+      <span>เหลืออีก <b id="remain">—</b> คน จึงถึงเป้าหมาย</span>
+      <span>มีผู้สมัครแล้ว <b id="distCount">—</b> จาก 6 อำเภอ</span>
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <div class="kpis">
+    <div class="kpi"><div class="bar" style="background:var(--green)"></div>
+      <div class="lbl">ผู้สมัครทั้งหมด (จังหวัด)</div><div class="val" id="kpiTotal">—</div><div class="sub">คน (เป้า 3,000)</div></div>
+    <div class="kpi"><div class="bar" style="background:var(--sky)"></div>
+      <div class="lbl">อำเภอนำสูงสุด</div><div class="val" id="kpiLeadName" style="font-size:18px">—</div><div class="sub" id="kpiLeadSub">—</div></div>
+    <div class="kpi"><div class="bar" style="background:var(--gold)"></div>
+      <div class="lbl">ประเภทยอดนิยม</div><div class="val" id="kpiActName" style="font-size:18px">—</div><div class="sub" id="kpiActSub">—</div></div>
+    <div class="kpi"><div class="bar" style="background:var(--purple)"></div>
+      <div class="lbl">เฉลี่ยต่อวัน</div><div class="val" id="kpiAvg">—</div><div class="sub">คน/วัน</div></div>
+  </div>
+
+  <!-- NBP charts -->
+  <div class="grid">
+    <div class="panel"><h2><span class="dot" style="background:var(--green)"></span>ผู้สมัครเทียบเป้าหมาย รายอำเภอ</h2>
+      <div class="chartbox"><canvas id="districtChart"></canvas></div></div>
+    <div class="panel"><h2><span class="dot" style="background:var(--gold)"></span>สัดส่วนตามประเภทกิจกรรม</h2>
+      <div class="chartbox"><canvas id="activityChart"></canvas></div></div>
+  </div>
+
+  <!-- NBP table + daily -->
+  <div class="grid">
+    <div class="panel" id="districtPanel">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+        <h2 style="margin:0"><span class="dot" style="background:var(--sky)"></span>ตารางสรุปรายอำเภอ</h2>
+        <button class="refresh" onclick="exportSummary()">📷 ส่งออกเป็นรูป</button>
+      </div>
+      <table><thead><tr><th>#</th><th>อำเภอ</th><th class="num">สมัครแล้ว</th><th class="num">เป้าหมาย</th><th class="num" style="width:150px">% ความคืบหน้า</th></tr></thead>
+        <tbody id="tbody"></tbody>
+        <tfoot><tr style="font-weight:800"><td></td><td>รวมทั้งจังหวัด</td><td class="num">—</td><td class="num">3,000</td><td class="num">—</td></tr></tfoot></table></div>
+    <div class="panel"><h2><span class="dot" style="background:var(--purple)"></span>ยอดสมัครรายวัน</h2>
+      <div class="chartbox sm"><canvas id="dailyChart"></canvas></div></div>
+  </div>
+
+  <!-- เยาวชน/ผู้ใหญ่ รายอำเภอ (สด จาก export) -->
+  <div class="panel" style="margin-bottom:16px">
+    <h2><span class="dot" style="background:var(--red)"></span>เปรียบเทียบ เยาวชน / ผู้ใหญ่ รายอำเภอ</h2>
+    <div class="note" id="yaNote">เยาวชน = ค่าสมัคร 240 บาท (อายุ ≤ 18) · ผู้ใหญ่ = ส่วนที่เหลือของยอดอำเภอ · ยอดรวมตรงกับยอดจังหวัด</div>
+    <div class="chartbox"><canvas id="yaChart"></canvas></div>
+    <table style="margin-top:14px"><thead><tr><th>อำเภอ</th><th class="num">เยาวชน</th><th class="num">ผู้ใหญ่</th><th class="num">รวม</th></tr></thead><tbody id="yaTbody"></tbody></table>
+  </div>
+
+  <!-- เขต 8 + ประเทศ -->
+  <div class="grid2">
+    <div class="panel scale"><div class="bignum" id="natTotal">—</div><div class="biglbl">ผู้สมัครทั้งประเทศ (คน)</div>
+      <div class="r8note">จังหวัดหนองบัวลำภู อยู่อันดับที่ <b id="natRank">—</b> ของประเทศ</div></div>
+    <div class="panel scale red"><div class="bignum" id="r8Total">—</div><div class="biglbl">เขตสุขภาพที่ 8 · 7 จังหวัด (คน)</div>
+      <div class="r8note">หนองบัวลำภูคิดเป็น <b id="r8share">—</b> ของเขต 8</div></div>
+  </div>
+  <div class="panel" style="margin-bottom:16px">
+    <h2><span class="dot" style="background:var(--navy)"></span>เขตสุขภาพที่ 8 — รายจังหวัด</h2>
+    <div class="chartbox sm"><canvas id="r8Chart"></canvas></div>
+  </div>
+
+  <!-- PR posters -->
+  <div class="posterRow">
+    <div class="posterCard"><h3>โปสเตอร์ประชาสัมพันธ์ · คลิกเพื่อสมัคร</h3>
+      <a href="https://wrb12.thai.run/event/NBP" target="_blank" rel="noopener" id="posterLink" title="คลิกเพื่อสมัครเข้าร่วมกิจกรรม">
+        <img src="poster.jpg" alt="โปสเตอร์" onerror="document.getElementById('posterLink').style.display='none';document.getElementById('posterPh').style.display='block'"></a>
+      <div class="ph" id="posterPh" style="display:none">วางไฟล์ <b>poster.jpg</b><br>ในโฟลเดอร์เดียวกับไฟล์นี้</div></div>
+    <div class="posterCard"><h3>วิดีโอประชาสัมพันธ์</h3>
+      <video src="vdopr.mp4" autoplay muted loop playsinline controls preload="metadata"
+        style="width:100%;border-radius:10px;display:block;background:#eef2fa"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='block'"></video>
+      <div class="ph" style="display:none">วางไฟล์ <b>vdopr.mp4</b><br>ในโฟลเดอร์เดียวกับไฟล์นี้</div></div>
+  </div>
+
+  <footer>
+    <a class="stafflink" href="https://wrb12-report.werayutminer.workers.dev" target="_blank" rel="noopener">🔒 สำหรับเจ้าหน้าที่เท่านั้น</a><br>
+    จัดทำโดย กลุ่มงานส่งเสริมสุขภาพ และกลุ่มงานสุขภาพดิจิทัล<br>
+    สำนักงานสาธารณสุขจังหวัดหนองบัวลำภู<br>
+    ที่มาข้อมูลผู้สมัคร: ระบบหลังบ้าน WRB12 จังหวัดหนองบัวลำภู<br>
+    © 2569 สำนักงานสาธารณสุขจังหวัดหนองบัวลำภู สงวนลิขสิทธิ์
+  </footer>
+</div>
+
+<script>
+/* ====== DATA_START (ข้อมูลสำรอง · อัปเดตอัตโนมัติ) ====== */
+const DATA = {
+  updatedText: "—",
+  totalTarget: 3000,
+  districts: [
+    {name:"เมืองหนองบัวลำภู", count:58, target:900, pop:136693},
+    {name:"ศรีบุญเรือง",       count:17, target:500, pop:109388},
+    {name:"นากลาง",           count:4,  target:500, pop:92427},
+    {name:"สุวรรณคูหา",        count:1,  target:400, pop:67887},
+    {name:"โนนสัง",           count:2,  target:400, pop:65035},
+    {name:"นาวัง",            count:3,  target:300, pop:37200}
+  ],
+  activity: [ {name:"เดิน",count:70}, {name:"วิ่ง",count:16}, {name:"ปั่น",count:1} ],
+  daily:    [ {d:"4 มิ.ย.",count:21}, {d:"5 มิ.ย.",count:21} ],
+  national: { total:13011, nbpRank:29, provinceCount:102, nbpCount:88 },
+  region8: { total:817, provinces:[{name:"เลย",count:329},{name:"อุดรธานี",count:238},{name:"หนองบัวลำภู",count:87},{name:"สกลนคร",count:66},{name:"นครพนม",count:55},{name:"หนองคาย",count:42},{name:"บึงกาฬ",count:0}] },
+  youthAdult:[{district:"เมืองหนองบัวลำภู",youth:0},{district:"ศรีบุญเรือง",youth:0},{district:"นากลาง",youth:0},{district:"สุวรรณคูหา",youth:0},{district:"โนนสัง",youth:0},{district:"นาวัง",youth:0},{district:"สมัครมาจากจังหวัดอื่น",youth:1}]
+};
+/* ====== DATA_END ====== */
+
+const API_URL = "https://wrb12-data.werayutminer.workers.dev";
+const POLL_MS = 60000;
+
+const C={navy:'#13235f',blue:'#1d54c4',sky:'#2f8fe0',red:'#d8232a',gold:'#e6a017',green:'#1f9d57',purple:'#7b61ff',muted:'#5e6b85',line:'#d8e2f3'};
+Chart.defaults.font.family="'Noto Sans Thai',sans-serif";
+Chart.defaults.color='#475569';
+
+const TARGETS=[["เมืองหนองบัวลำภู",900,136693],["ศรีบุญเรือง",500,109388],["นากลาง",500,92427],["สุวรรณคูหา",400,67887],["โนนสัง",400,65035],["นาวัง",300,37200]];
+const TH=['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const palette=[C.blue,C.sky,C.green,C.gold,C.purple,C.red,C.muted];
+const liveOn = API_URL && API_URL!=="PASTE_WORKER_URL_HERE";
+let chD,chA,chDay,chR8,chYA,lastD=DATA;
+
+function thStamp(dt){const p=n=>String(n).padStart(2,'0');return `${dt.getDate()} ${TH[dt.getMonth()+1]} ${dt.getFullYear()+543} เวลา ${p(dt.getHours())}:${p(dt.getMinutes())} น.`;}
+function fmt(n){return Number(n||0).toLocaleString();}
+
+function fromLive(live){
+  const rmap=Object.fromEntries((live.districts||[]).map(d=>[d.name,d.count]));
+  const amap=Object.fromEntries((live.activity||[]).map(a=>[a.name,a.count]));
+  const known=TARGETS.map(t=>t[0]);
+  const districts=TARGETS.map(([n,t,p])=>({name:n,label:'อำเภอ'+n,count:rmap[n]||0,target:t,pop:p}));
+  (live.districts||[]).forEach(d=>{ if(!known.includes(d.name)) districts.push({name:d.name,label:d.name,count:d.count,target:0,pop:0}); });
+  // ให้ยอด "หนองบัวลำภู" ในกราฟเขต 8 ตรงกับยอดรวมจังหวัด (แหล่งเดียวกัน)
+  const nbpTotal=districts.reduce((s,d)=>s+d.count,0);
+  let region8=live.region8;
+  if(region8&&region8.provinces){
+    const provinces=region8.provinces.map(p=>p.name==='หนองบัวลำภู'?{...p,count:nbpTotal}:p);
+    region8={total:provinces.reduce((s,p)=>s+p.count,0),provinces};
+  }
+  return {
+    updatedText: thStamp(new Date()), totalTarget: 3000, districts,
+    activity: ['เดิน','วิ่ง','ปั่น'].map(n=>({name:n,count:amap[n]||0})),
+    daily: (live.daily||[]).map(d=>{const dt=new Date(d.date+'T00:00:00Z');return {d:`${dt.getUTCDate()} ${TH[dt.getUTCMonth()+1]}`,count:d.count};}),
+    national: live.national, region8, youthAdult: live.youthAdult
+  };
+}
+
+function render(D){
+  lastD=D;
+  const total=D.districts.reduce((s,d)=>s+d.count,0);
+  const TT=D.totalTarget, pct=TT?total/TT*100:0;
+  const active=D.districts.filter(d=>d.count>0&&d.target>0).length;
+  const lead=[...D.districts].sort((a,b)=>b.count-a.count)[0]||{name:'—',count:0,target:1};
+  const topA=[...D.activity].sort((a,b)=>b.count-a.count)[0]||{name:'—',count:0};
+  const avg=D.daily.length?Math.round(total/D.daily.length):0;
+
+  document.getElementById('updTime').textContent=D.updatedText;
+  document.getElementById('totNow').innerHTML=fmt(total)+' <span>/ '+fmt(TT)+' คน</span>';
+  document.getElementById('totPct').textContent=pct.toFixed(1)+'%';
+  document.getElementById('totFill').style.width=Math.max(pct,0.6)+'%';
+  document.getElementById('remain').textContent=fmt(TT-total);
+  document.getElementById('distCount').textContent=active;
+  document.getElementById('kpiTotal').textContent=fmt(total);
+  document.getElementById('kpiLeadName').textContent=(lead.label||('อำเภอ'+lead.name));
+  document.getElementById('kpiLeadSub').textContent=lead.count+' คน · '+(lead.target?(lead.count/lead.target*100).toFixed(1):0)+'% ของเป้า';
+  document.getElementById('kpiActName').textContent=topA.name;
+  document.getElementById('kpiActSub').textContent=topA.count+' คน ('+(total?(topA.count/total*100).toFixed(1):0)+'%)';
+  document.getElementById('kpiAvg').textContent=avg;
+
+  const tb=document.getElementById('tbody'); tb.innerHTML='';
+  D.districts.forEach((r,i)=>{
+    const p=r.target? r.count/r.target*100:0;
+    const tr=document.createElement('tr'); if(r.count===0) tr.className='tag0';
+    tr.innerHTML=`<td><span class="rank">${i+1}</span></td><td>${r.label||('อำเภอ'+r.name)}</td><td class="num">${r.count}</td><td class="num">${r.target?fmt(r.target):'–'}</td><td class="num">${r.target?p.toFixed(1)+'%':'–'}<div class="mini"><i style="width:${Math.min(Math.max(p,1.5),100)}%;background:${palette[i%palette.length]}"></i></div></td>`;
+    tb.appendChild(tr);
+  });
+  document.querySelector('tfoot td:nth-child(3)').textContent=total;
+  document.querySelector('tfoot td:nth-child(4)').textContent=fmt(TT);
+  document.querySelector('tfoot td:nth-child(5)').textContent=pct.toFixed(1)+'%';
+
+  // เขต 8 + ประเทศ
+  if(D.national!=null){
+    const nt=(typeof D.national==='object')?D.national.total:D.national;
+    document.getElementById('natTotal').textContent=fmt(nt);
+    const rk=(typeof D.national==='object')?D.national.nbpRank:null;
+    if(rk) document.getElementById('natRank').textContent=rk;
+  }
+  if(D.region8){
+    document.getElementById('r8Total').textContent=fmt(D.region8.total);
+    const nbp=(D.region8.provinces||[]).find(p=>p.name==='หนองบัวลำภู');
+    document.getElementById('r8share').textContent=(D.region8.total&&nbp)?((nbp.count/D.region8.total*100).toFixed(1)+'%'):'—';
+  }
+
+  drawCharts(D);
+  renderYA(D);
+}
+
+function renderYA(D){
+  if(!D.districts||!D.districts.length) return;
+  const ya=D.youthAdult||[];
+  const ymap=Object.fromEntries(ya.map(x=>[x.district,x.youth]));
+  const labels=[],youth=[],adult=[],rows=[]; let ty=0,ta=0;
+  D.districts.forEach(d=>{
+    const y=Math.min(ymap[d.name]||0, d.count); const a=d.count-y;
+    labels.push(d.name); youth.push(y); adult.push(a); ty+=y; ta+=a;
+    rows.push(`<tr><td>${d.label||('อำเภอ'+d.name)}</td><td class="num">${y}</td><td class="num">${a}</td><td class="num">${d.count}</td></tr>`);
+  });
+  rows.push(`<tr style="font-weight:800"><td>รวม</td><td class="num">${ty}</td><td class="num">${ta}</td><td class="num">${ty+ta}</td></tr>`);
+  document.getElementById('yaTbody').innerHTML=rows.join('');
+  if(chYA)chYA.destroy();
+  chYA=new Chart(document.getElementById('yaChart'),{type:'bar',
+    data:{labels,datasets:[
+      {label:'เยาวชน (240฿)',data:youth,backgroundColor:C.gold,borderRadius:5},
+      {label:'ผู้ใหญ่ (360฿)',data:adult,backgroundColor:C.blue,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,beginAtZero:true,grid:{color:'#e6ecf6'}}}}});
+}
+
+function drawCharts(D){
+  const total=D.districts.reduce((s,d)=>s+d.count,0);
+  if(chD)chD.destroy(); if(chA)chA.destroy(); if(chDay)chDay.destroy(); if(chR8)chR8.destroy();
+  const grid={color:'#e6ecf6'};
+  chD=new Chart(document.getElementById('districtChart'),{type:'bar',
+    data:{labels:D.districts.map(d=>d.name),datasets:[
+      {label:'เป้าหมาย',data:D.districts.map(d=>d.target),backgroundColor:'#cdd9ef',borderRadius:5,barPercentage:.9,categoryPercentage:.7},
+      {label:'สมัครแล้ว',data:D.districts.map(d=>d.count),backgroundColor:C.blue,borderRadius:5,barPercentage:.9,categoryPercentage:.7}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:13,padding:12}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)+' คน'}}},scales:{y:{beginAtZero:true,grid},x:{grid:{display:false},ticks:{font:{size:11}}}}}});
+  chA=new Chart(document.getElementById('activityChart'),{type:'doughnut',
+    data:{labels:D.activity.map(a=>a.name),datasets:[{data:D.activity.map(a=>a.count),backgroundColor:[C.green,C.sky,C.gold],borderColor:'#fff',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom',labels:{padding:14,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+': '+c.parsed+' คน ('+(total?(c.parsed/total*100).toFixed(1):0)+'%)'}}}}});
+  chDay=new Chart(document.getElementById('dailyChart'),{type:'line',
+    data:{labels:D.daily.map(d=>d.d),datasets:[{data:D.daily.map(d=>d.count),borderColor:C.purple,backgroundColor:'rgba(123,97,255,.14)',fill:true,tension:.3,pointRadius:5,pointBackgroundColor:C.purple,borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' คน'}}},scales:{y:{beginAtZero:true,grid},x:{grid:{display:false}}}}});
+  if(D.region8){
+    const prov=[...(D.region8.provinces||[])].sort((a,b)=>b.count-a.count);
+    chR8=new Chart(document.getElementById('r8Chart'),{type:'bar',
+      data:{labels:prov.map(p=>p.name),datasets:[{data:prov.map(p=>p.count),backgroundColor:prov.map(p=>p.name==='หนองบัวลำภู'?C.red:C.blue),borderRadius:5}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.parsed.y)+' คน'}}},scales:{y:{beginAtZero:true,grid},x:{grid:{display:false},ticks:{font:{size:11}}}}}});
+  }
+}
+
+function setBadge(state){
+  const b=document.getElementById('autoBadge'); if(!b)return;
+  if(!liveOn){ b.textContent='● ข้อมูลอัปเดตตามรอบเวลา'; b.style.color=C.muted; return; }
+  if(state==='loading'){ b.textContent='● กำลังดึงข้อมูลสด…'; b.style.color=C.gold; }
+  else if(state==='ok'){ b.textContent='● ข้อมูลสด · รีเฟรชทุก 60 วินาที'; b.style.color=C.green; }
+  else { b.textContent='● ต่อข้อมูลสดไม่ได้ (แสดงข้อมูลสำรอง)'; b.style.color=C.red; }
+}
+async function loadLive(){
+  setBadge('loading');
+  try{
+    const r=await fetch(API_URL+(API_URL.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'});
+    if(!r.ok) throw new Error('http '+r.status);
+    const live=await r.json(); if(live.error) throw new Error(live.error);
+    render(fromLive(live)); setBadge('ok');
+  }catch(e){ render(DATA); setBadge('err'); }
+}
+function refreshDash(){ liveOn ? loadLive() : location.reload(); }
+window.refreshDash=refreshDash;
+
+function exportSummary(){
+  if(typeof html2canvas==='undefined'){ alert('กำลังโหลดเครื่องมือ ลองใหม่อีกครั้ง'); return; }
+  const D=lastD||DATA;
+  const now=new Date();
+  const FM=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  const p=n=>String(n).padStart(2,'0');
+  const be=now.getFullYear()+543;
+  const dstr=`${now.getDate()} ${FM[now.getMonth()]} ${be}`;
+  const tstr=`${p(now.getHours())}.${p(now.getMinutes())}`;
+  const fname=`wrb12_${be}${p(now.getMonth()+1)}${p(now.getDate())}_${p(now.getHours())}${p(now.getMinutes())}.jpg`;
+  const f=n=>Number(n||0).toLocaleString();
+  const districts=D.districts||[];
+  const totalCount=districts.reduce((s,d)=>s+d.count,0);
+  const totalTarget=3000;
+  const totPct=totalTarget?totalCount/totalTarget*100:0;
+  let r8rank='–';
+  if(D.region8&&D.region8.provinces){const s=[...D.region8.provinces].sort((a,b)=>b.count-a.count);const i=s.findIndex(x=>x.name==='หนองบัวลำภู');if(i>=0)r8rank=i+1;}
+  const natRank=(D.national&&typeof D.national==='object'&&D.national.nbpRank)?D.national.nbpRank:'–';
+  const rowHtml=districts.map(d=>{
+    const hasT=d.target>0; const pct=hasT?d.count/d.target*100:0;
+    const bar=hasT?`<div style="height:17px;background:#dbe6f3;border-radius:9px;overflow:hidden;flex:1"><div style="height:100%;width:${Math.min(Math.max(pct,2),100)}%;background:linear-gradient(90deg,#1f5fa8,#3b82d6);border-radius:9px"></div></div>`:`<div style="flex:1"></div>`;
+    return `<tr><td style="padding:14px 20px;font-weight:700;font-size:22px;color:#13235f">${d.label||('อำเภอ'+d.name)}</td>`+
+      `<td style="padding:14px 20px;text-align:center;font-weight:800;font-size:22px;color:#e8721c">${hasT?f(d.target):'–'}</td>`+
+      `<td style="padding:14px 20px;text-align:center;font-weight:900;color:#1f5fa8;font-size:26px">${f(d.count)}</td>`+
+      `<td style="padding:14px 20px"><div style="display:flex;align-items:center;gap:10px">${bar}<b style="color:#13235f;min-width:64px;text-align:right;font-size:21px">${hasT?pct.toFixed(1)+'%':'–'}</b></div></td></tr>`;
+  }).join('');
+  const card=document.createElement('div');
+  card.style.cssText="position:fixed;left:-9999px;top:0;width:1120px;background:#eef2f7;font-family:'Noto Sans Thai',sans-serif;color:#13235f";
+  card.innerHTML=`
+    <div style="background:linear-gradient(100deg,#0e5a34,#1c8048);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px">
+      <div style="color:#fff">
+        <div style="font-size:27px;font-weight:800;line-height:1.3">สรุปผลการรับสมัครโครงการ<span style="color:#ffd34d">แสงนำใจไทยทั้งชาติ</span> เดิน วิ่ง ปั่น ป้องกันอัมพาต</div>
+        <div style="font-size:21px;font-weight:700;margin-top:3px">ครั้งที่ 12 เฉลิมพระเกียรติ จังหวัดหนองบัวลำภู</div>
+        <div style="font-size:16px;margin-top:6px;color:#d7f0df">วันที่ ${dstr} เวลา ${tstr} น.</div>
+      </div>
+      <img src="wrb12-logo.png" alt="WRB12" style="height:82px;width:auto;flex-shrink:0;background:#fff;border-radius:10px;padding:6px" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div style="display:none;background:#fff;border-radius:10px;padding:10px 15px;text-align:center;flex-shrink:0;line-height:1.05">
+        <div style="font-size:16px;font-weight:900;color:#1d54c4;letter-spacing:1px">WALK<br>RUN<br>BIKE <span style="color:#e2342d">12</span></div>
+      </div>
+    </div>
+    <div style="padding:22px 28px 28px">
+      <table style="width:100%;border-collapse:separate;border-spacing:0 6px">
+        <thead><tr>
+          <th style="background:#e8721c;color:#fff;padding:15px 20px;text-align:left;border-radius:8px 0 0 8px;font-size:20px">อำเภอ / พื้นที่</th>
+          <th style="background:#e8721c;color:#fff;padding:15px 20px;font-size:20px">🎯 เป้าหมาย</th>
+          <th style="background:#1f5fa8;color:#fff;padding:15px 20px;font-size:20px">ยอดลงทะเบียน</th>
+          <th style="background:#e8721c;color:#fff;padding:15px 20px;border-radius:0 8px 8px 0;font-size:20px">📈 % ความสำเร็จ</th>
+        </tr></thead>
+        <tbody style="background:#fff">${rowHtml}
+          <tr style="background:#cfe0f3">
+            <td style="padding:15px 20px;font-weight:900;font-size:23px;border-radius:8px 0 0 8px">รวมทั้งหมด</td>
+            <td style="padding:15px 20px;text-align:center;font-weight:900;font-size:23px;color:#e8721c">${f(totalTarget)}</td>
+            <td style="padding:15px 20px;text-align:center;font-weight:900;color:#1f5fa8;font-size:27px">${f(totalCount)}</td>
+            <td style="padding:15px 20px;border-radius:0 8px 8px 0"><div style="display:flex;align-items:center;gap:10px"><div style="height:17px;background:#b9cfe8;border-radius:9px;overflow:hidden;flex:1"><div style="height:100%;width:${Math.min(Math.max(totPct,2),100)}%;background:#0f5132;border-radius:9px"></div></div><b style="min-width:64px;text-align:right;font-size:22px">${totPct.toFixed(1)}%</b></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="display:flex;gap:18px;margin-top:20px">
+        <div style="flex:1;background:linear-gradient(100deg,#13235f,#1d54c4);border-radius:16px;padding:20px 26px;color:#fff;display:flex;align-items:center;gap:16px">
+          <span style="font-size:46px">🥇</span><div><div style="font-size:34px;font-weight:900;line-height:1">อันดับที่ ${r8rank}</div><div style="font-size:18px;margin-top:4px;color:#cfe0ff">ของเขตสุขภาพที่ 8</div></div>
+        </div>
+        <div style="flex:1;background:linear-gradient(100deg,#b5560a,#ed7d22);border-radius:16px;padding:20px 26px;color:#fff;display:flex;align-items:center;gap:16px">
+          <span style="font-size:46px">🥇</span><div><div style="font-size:34px;font-weight:900;line-height:1">อันดับที่ ${natRank}</div><div style="font-size:18px;margin-top:4px;color:#ffe9cf">ของประเทศ</div></div>
+        </div>
+      </div>
+      <div style="margin-top:16px;font-size:14px;color:#5e6b85;text-align:right">จัดทำโดย กลุ่มงานส่งเสริมสุขภาพ และกลุ่มงานสุขภาพดิจิทัล สำนักงานสาธารณสุขจังหวัดหนองบัวลำภู</div>
+    </div>`;
+  document.body.appendChild(card);
+  setTimeout(()=>{
+    html2canvas(card,{scale:2,backgroundColor:'#eef2f7',useCORS:true}).then(cv=>{
+      const a=document.createElement('a');a.href=cv.toDataURL('image/jpeg',0.95);a.download=fname;a.click();
+      document.body.removeChild(card);
+    }).catch(e=>{ document.body.removeChild(card); alert('ส่งออกไม่สำเร็จ: '+e); });
+  },150);
+}
+window.exportSummary=exportSummary;
+
+if(liveOn){ render(DATA); loadLive(); setInterval(loadLive,POLL_MS); } else { render(DATA); setBadge(); }
+</script>
+</body>
+</html>
