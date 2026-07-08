@@ -1,0 +1,13 @@
+# กันข้อมูลส่วนบุคคล/โทเค็นหลุด — ไม่ push อะไรเลย ยกเว้นไฟล์เว็บที่อนุญาตด้านล่าง
+/*
+!/.gitignore
+!/CNAME
+!/index.html
+!/banner.png
+!/header-export.png
+!/wrb12-logo.png
+!/poster.jpg
+!/vdopr.mp4
+!/sitemap.xml
+!/robots.txt
+!/googled76008b4928c4803.html
