@@ -405,7 +405,8 @@ function drawCharts(D){
     const prov=[...(D.region8.provinces||[])].map(p=>{const t=R8T[p.name]||0;return {name:p.name,count:p.count,target:t,pct:t?p.count/t*100:0};}).sort((a,b)=>b.pct-a.pct);
     chR8=new Chart(document.getElementById('r8Chart'),{type:'bar',
       data:{labels:prov.map(p=>p.name),datasets:[{data:prov.map(p=>+p.pct.toFixed(1)),backgroundColor:prov.map(p=>p.name==='หนองบัวลำภู'?C.red:C.blue),borderRadius:5}]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>{const p=prov[c.dataIndex];return p.pct.toFixed(1)+'% ('+fmt(p.count)+' / '+fmt(p.target)+' คน)';}}}},scales:{y:{beginAtZero:true,grid,ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11}}}}}});
+      options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:28}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>{const p=prov[c.dataIndex];return p.pct.toFixed(1)+'% ('+fmt(p.count)+' / '+fmt(p.target)+' คน)';}}}},scales:{y:{beginAtZero:true,grid,ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11}}}}},
+      plugins:[{id:'r8lab',afterDatasetsDraw(ch){const ctx=ch.ctx,meta=ch.getDatasetMeta(0);ctx.save();ctx.textAlign='center';meta.data.forEach((bar,i)=>{const p=prov[i];ctx.fillStyle=(p.name==='หนองบัวลำภู'?C.red:C.navy);ctx.font='700 11px "Noto Sans Thai",sans-serif';ctx.fillText(p.pct.toFixed(1)+'%',bar.x,bar.y-15);ctx.fillStyle=C.muted;ctx.font='9.5px "Noto Sans Thai",sans-serif';ctx.fillText(fmt(p.count)+' / '+fmt(p.target),bar.x,bar.y-3);});ctx.restore();}}]});
   }
 }
 
