@@ -429,6 +429,15 @@ async function loadLive(){
 function refreshDash(){ liveOn ? loadLive() : location.reload(); }
 window.refreshDash=refreshDash;
 
+function showImgOverlay(url){
+  const ov=document.createElement('div');
+  ov.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px;overflow:auto;-webkit-overflow-scrolling:touch";
+  ov.innerHTML='<div style="color:#fff;font-family:\'Noto Sans Thai\',sans-serif;font-size:15px;margin:6px 0 12px;text-align:center;line-height:1.6">📷 <b>แตะค้างที่รูป</b> แล้วเลือก "บันทึกรูปภาพ / Save Image"<br><span style="font-size:12.5px;color:#cbd5e1">(แตะพื้นที่ว่างเพื่อปิด)</span></div>'
+    +'<img src="'+url+'" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.6)">'
+    +'<a href="'+url+'" download style="margin:14px 0;color:#fff;background:#1d54c4;padding:11px 20px;border-radius:22px;text-decoration:none;font-family:\'Noto Sans Thai\',sans-serif;font-size:14px;font-weight:700">⬇ ดาวน์โหลด</a>';
+  ov.addEventListener('click',e=>{ if(e.target===ov) ov.remove(); });
+  document.body.appendChild(ov);
+}
 function exportSummary(){
   if(typeof html2canvas==='undefined'){ alert('กำลังโหลดเครื่องมือ ลองใหม่อีกครั้ง'); return; }
   const D=lastD||DATA;
@@ -500,9 +509,23 @@ function exportSummary(){
   document.body.appendChild(card);
   setTimeout(()=>{
     html2canvas(card,{scale:2,backgroundColor:'#eef2f7',useCORS:true}).then(cv=>{
-      const a=document.createElement('a');a.href=cv.toDataURL('image/jpeg',0.95);a.download=fname;a.click();
-      document.body.removeChild(card);
-    }).catch(e=>{ document.body.removeChild(card); alert('ส่งออกไม่สำเร็จ: '+e); });
+      if(card.parentNode)document.body.removeChild(card);
+      cv.toBlob(async(blob)=>{
+        if(!blob){ alert('สร้างรูปไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
+        try{
+          const file=new File([blob],fname,{type:'image/jpeg'});
+          if(navigator.canShare && navigator.canShare({files:[file]})){
+            try{ await navigator.share({files:[file],title:'สรุปผลผู้สมัคร WRB12'}); return; }
+            catch(err){ if(err && err.name==='AbortError') return; }
+          }
+        }catch(e){}
+        const url=URL.createObjectURL(blob);
+        const isMobile=/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        if(isMobile){ showImgOverlay(url); }
+        else{ const a=document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();a.remove(); }
+        setTimeout(()=>URL.revokeObjectURL(url),60000);
+      },'image/jpeg',0.95);
+    }).catch(e=>{ if(card.parentNode)document.body.removeChild(card); alert('ส่งออกไม่สำเร็จ: '+e); });
   },150);
 }
 window.exportSummary=exportSummary;
