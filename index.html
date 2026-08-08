@@ -429,22 +429,30 @@ async function loadLive(){
 function refreshDash(){ liveOn ? loadLive() : location.reload(); }
 window.refreshDash=refreshDash;
 
-function showExportOverlay(url,file,fname){
+function showExportOverlay(url,file,fname,cv){
   const canShare=!!(navigator.canShare&&file&&navigator.canShare({files:[file]}));
+  const canCopy=!!(navigator.clipboard&&window.ClipboardItem);
   const ov=document.createElement('div');
   ov.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px;overflow:auto;-webkit-overflow-scrolling:touch";
+  const bs="display:inline-flex;align-items:center;gap:7px;color:#fff;padding:12px 22px;border-radius:24px;font-family:'Noto Sans Thai',sans-serif;font-size:15px;font-weight:700;text-decoration:none;border:none;cursor:pointer";
+  let btns='<a id="ovSave" href="'+url+'" download="'+fname+'" style="'+bs+';background:#1d54c4">💾 บันทึกรูปภาพ</a>';
+  if(canCopy) btns+='<button id="ovCopy" style="'+bs+';background:#e8721c">📋 คัดลอกรูป</button>';
+  if(canShare) btns+='<button id="ovShare" style="'+bs+';background:#06c755">📤 แชร์ / LINE</button>';
   ov.innerHTML='<div style="color:#fff;font-family:\'Noto Sans Thai\',sans-serif;font-size:15px;margin:6px 0 12px;text-align:center;line-height:1.5">รูปสรุปผลผู้สมัคร WRB12<br><span style="font-size:12px;color:#cbd5e1">แตะพื้นที่ว่างเพื่อปิด</span></div>'
-    +'<img src="'+url+'" style="max-width:100%;max-height:56vh;height:auto;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.6)">'
-    +'<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:16px 0 6px">'
-    +'<a id="ovSave" href="'+url+'" download="'+fname+'" style="display:inline-flex;align-items:center;gap:7px;color:#fff;background:#1d54c4;padding:12px 22px;border-radius:24px;text-decoration:none;font-family:\'Noto Sans Thai\',sans-serif;font-size:15px;font-weight:700">💾 บันทึกรูปภาพ</a>'
-    +'<button id="ovShare" style="display:inline-flex;align-items:center;gap:7px;color:#fff;background:#06c755;border:none;padding:12px 22px;border-radius:24px;font-family:\'Noto Sans Thai\',sans-serif;font-size:15px;font-weight:700;cursor:pointer">📤 แชร์ / LINE</button>'
-    +'</div>'
-    +'<div style="color:#94a3b8;font-family:\'Noto Sans Thai\',sans-serif;font-size:11.5px;text-align:center">บนมือถือ กดค้างที่รูปเพื่อบันทึกก็ได้</div>';
+    +'<img src="'+url+'" style="max-width:100%;max-height:54vh;height:auto;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.6)">'
+    +'<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:16px 0 8px">'+btns+'</div>'
+    +'<div style="color:#cbd5e1;font-family:\'Noto Sans Thai\',sans-serif;font-size:12px;text-align:center;line-height:1.7;max-width:540px">💻 <b>คอม:</b> ส่งเข้าไลน์ให้กด "📋 คัดลอกรูป" แล้ววางในแชท (Ctrl+V) · หรือ "บันทึก" แล้วลากไฟล์เข้าไลน์<br>📱 <b>มือถือ:</b> กด "📤 แชร์ / LINE" ได้เลย</div>';
   ov.addEventListener('click',e=>{ if(e.target===ov) ov.remove(); });
   document.body.appendChild(ov);
-  ov.querySelector('#ovShare').addEventListener('click',async()=>{
-    if(canShare){ try{ await navigator.share({files:[file],title:'สรุปผลผู้สมัคร WRB12'}); }catch(e){} }
-    else{ alert('อุปกรณ์นี้แชร์รูปเข้าแอปโดยตรงไม่ได้ กรุณากด "บันทึกรูปภาพ" แล้วส่งเข้า LINE เองครับ'); }
+  const sh=ov.querySelector('#ovShare');
+  if(sh) sh.addEventListener('click',async()=>{ try{ await navigator.share({files:[file],title:'สรุปผลผู้สมัคร WRB12'}); }catch(e){} });
+  const cp=ov.querySelector('#ovCopy');
+  if(cp) cp.addEventListener('click',()=>{
+    if(!cv){ alert('คัดลอกไม่ได้ กรุณาใช้ปุ่มบันทึกรูป'); return; }
+    cv.toBlob(async(png)=>{
+      try{ await navigator.clipboard.write([new ClipboardItem({'image/png':png})]); cp.textContent='✅ คัดลอกแล้ว! วางในไลน์ Ctrl+V'; cp.style.background='#0f9d58'; }
+      catch(e){ alert('คัดลอกไม่สำเร็จ กรุณาใช้ปุ่มบันทึกรูปแทน'); }
+    },'image/png');
   });
 }
 function exportSummary(){
@@ -523,7 +531,7 @@ function exportSummary(){
         if(!blob){ alert('สร้างรูปไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
         let file=null; try{ file=new File([blob],fname,{type:'image/jpeg'}); }catch(e){}
         const url=URL.createObjectURL(blob);
-        showExportOverlay(url,file,fname);
+        showExportOverlay(url,file,fname,cv);
         setTimeout(()=>URL.revokeObjectURL(url),120000);
       },'image/jpeg',0.95);
     }).catch(e=>{ if(card.parentNode)document.body.removeChild(card); alert('ส่งออกไม่สำเร็จ: '+e); });
