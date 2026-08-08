@@ -429,14 +429,23 @@ async function loadLive(){
 function refreshDash(){ liveOn ? loadLive() : location.reload(); }
 window.refreshDash=refreshDash;
 
-function showImgOverlay(url){
+function showExportOverlay(url,file,fname){
+  const canShare=!!(navigator.canShare&&file&&navigator.canShare({files:[file]}));
   const ov=document.createElement('div');
   ov.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px;overflow:auto;-webkit-overflow-scrolling:touch";
-  ov.innerHTML='<div style="color:#fff;font-family:\'Noto Sans Thai\',sans-serif;font-size:15px;margin:6px 0 12px;text-align:center;line-height:1.6">📷 <b>แตะค้างที่รูป</b> แล้วเลือก "บันทึกรูปภาพ / Save Image"<br><span style="font-size:12.5px;color:#cbd5e1">(แตะพื้นที่ว่างเพื่อปิด)</span></div>'
-    +'<img src="'+url+'" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.6)">'
-    +'<a href="'+url+'" download style="margin:14px 0;color:#fff;background:#1d54c4;padding:11px 20px;border-radius:22px;text-decoration:none;font-family:\'Noto Sans Thai\',sans-serif;font-size:14px;font-weight:700">⬇ ดาวน์โหลด</a>';
+  ov.innerHTML='<div style="color:#fff;font-family:\'Noto Sans Thai\',sans-serif;font-size:15px;margin:6px 0 12px;text-align:center;line-height:1.5">รูปสรุปผลผู้สมัคร WRB12<br><span style="font-size:12px;color:#cbd5e1">แตะพื้นที่ว่างเพื่อปิด</span></div>'
+    +'<img src="'+url+'" style="max-width:100%;max-height:56vh;height:auto;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.6)">'
+    +'<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:16px 0 6px">'
+    +'<a id="ovSave" href="'+url+'" download="'+fname+'" style="display:inline-flex;align-items:center;gap:7px;color:#fff;background:#1d54c4;padding:12px 22px;border-radius:24px;text-decoration:none;font-family:\'Noto Sans Thai\',sans-serif;font-size:15px;font-weight:700">💾 บันทึกรูปภาพ</a>'
+    +'<button id="ovShare" style="display:inline-flex;align-items:center;gap:7px;color:#fff;background:#06c755;border:none;padding:12px 22px;border-radius:24px;font-family:\'Noto Sans Thai\',sans-serif;font-size:15px;font-weight:700;cursor:pointer">📤 แชร์ / LINE</button>'
+    +'</div>'
+    +'<div style="color:#94a3b8;font-family:\'Noto Sans Thai\',sans-serif;font-size:11.5px;text-align:center">บนมือถือ กดค้างที่รูปเพื่อบันทึกก็ได้</div>';
   ov.addEventListener('click',e=>{ if(e.target===ov) ov.remove(); });
   document.body.appendChild(ov);
+  ov.querySelector('#ovShare').addEventListener('click',async()=>{
+    if(canShare){ try{ await navigator.share({files:[file],title:'สรุปผลผู้สมัคร WRB12'}); }catch(e){} }
+    else{ alert('อุปกรณ์นี้แชร์รูปเข้าแอปโดยตรงไม่ได้ กรุณากด "บันทึกรูปภาพ" แล้วส่งเข้า LINE เองครับ'); }
+  });
 }
 function exportSummary(){
   if(typeof html2canvas==='undefined'){ alert('กำลังโหลดเครื่องมือ ลองใหม่อีกครั้ง'); return; }
@@ -510,20 +519,12 @@ function exportSummary(){
   setTimeout(()=>{
     html2canvas(card,{scale:2,backgroundColor:'#eef2f7',useCORS:true}).then(cv=>{
       if(card.parentNode)document.body.removeChild(card);
-      cv.toBlob(async(blob)=>{
+      cv.toBlob((blob)=>{
         if(!blob){ alert('สร้างรูปไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
-        try{
-          const file=new File([blob],fname,{type:'image/jpeg'});
-          if(navigator.canShare && navigator.canShare({files:[file]})){
-            try{ await navigator.share({files:[file],title:'สรุปผลผู้สมัคร WRB12'}); return; }
-            catch(err){ if(err && err.name==='AbortError') return; }
-          }
-        }catch(e){}
+        let file=null; try{ file=new File([blob],fname,{type:'image/jpeg'}); }catch(e){}
         const url=URL.createObjectURL(blob);
-        const isMobile=/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-        if(isMobile){ showImgOverlay(url); }
-        else{ const a=document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();a.remove(); }
-        setTimeout(()=>URL.revokeObjectURL(url),60000);
+        showExportOverlay(url,file,fname);
+        setTimeout(()=>URL.revokeObjectURL(url),120000);
       },'image/jpeg',0.95);
     }).catch(e=>{ if(card.parentNode)document.body.removeChild(card); alert('ส่งออกไม่สำเร็จ: '+e); });
   },150);
