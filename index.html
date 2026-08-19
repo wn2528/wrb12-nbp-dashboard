@@ -539,6 +539,60 @@ function exportSummary(){
 }
 window.exportSummary=exportSummary;
 
+/* ===== แชทบอทป๊อปอัพ (ตอบคำถามอัตโนมัติ + ข้อมูลสด) ===== */
+(function(){
+  const S=document.createElement('style');
+  S.textContent=`
+  #cbBtn{position:fixed;right:18px;bottom:18px;z-index:9998;background:linear-gradient(135deg,#1d54c4,#2f8fe0);color:#fff;border:none;border-radius:50px;padding:13px 18px;font-family:'Noto Sans Thai',sans-serif;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 6px 20px rgba(29,84,196,.45);display:flex;align-items:center;gap:8px;transition:transform .12s}
+  #cbBtn:hover{transform:translateY(-2px)}
+  #cbPanel{position:fixed;right:18px;bottom:80px;z-index:9999;width:344px;max-width:calc(100vw - 28px);height:490px;max-height:calc(100vh - 110px);background:#fff;border-radius:16px;box-shadow:0 14px 44px rgba(20,40,90,.32);display:none;flex-direction:column;overflow:hidden;font-family:'Noto Sans Thai',sans-serif}
+  #cbPanel.open{display:flex}
+  .cbHead{background:linear-gradient(135deg,#13235f,#1d54c4);color:#fff;padding:13px 16px;display:flex;align-items:center;justify-content:space-between}
+  .cbHead b{font-size:15px}.cbHead button{cursor:pointer;font-size:22px;line-height:1;background:none;border:none;color:#fff}
+  .cbBody{flex:1;overflow-y:auto;padding:14px;background:#f6f9ff;display:flex;flex-direction:column;gap:10px}
+  .cbMsg{max-width:84%;padding:9px 13px;border-radius:14px;font-size:14px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+  .cbBot{background:#fff;border:1px solid #e2e8f3;align-self:flex-start;border-bottom-left-radius:4px;color:#16213f}
+  .cbUser{background:#1d54c4;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  .cbChips{display:flex;flex-wrap:wrap;gap:7px;padding:8px 12px;border-top:1px solid #eef2f8;background:#fff;max-height:96px;overflow:auto}
+  .cbChip{background:#eaf1ff;color:#1d54c4;border:1px solid #cfe0ff;border-radius:16px;padding:6px 11px;font-size:12.5px;cursor:pointer;font-family:inherit}
+  .cbChip:hover{background:#dbe8ff}
+  .cbInput{display:flex;gap:8px;padding:10px;border-top:1px solid #e2e8f3;background:#fff}
+  .cbInput input{flex:1;border:1px solid #d8e2f3;border-radius:20px;padding:9px 14px;font-family:inherit;font-size:14px;outline:none}
+  .cbInput button{background:#1d54c4;color:#fff;border:none;border-radius:20px;padding:0 16px;font-family:inherit;font-weight:700;cursor:pointer}`;
+  document.head.appendChild(S);
+  const btn=document.createElement('button');btn.id='cbBtn';btn.innerHTML='💬 สอบถามข้อมูล';
+  const panel=document.createElement('div');panel.id='cbPanel';
+  panel.innerHTML='<div class="cbHead"><b>💬 ผู้ช่วยตอบคำถาม WRB12</b><button title="ปิด" id="cbX">×</button></div>'
+    +'<div class="cbBody" id="cbBody"></div>'
+    +'<div class="cbChips" id="cbChips"></div>'
+    +'<div class="cbInput"><input id="cbIn" placeholder="พิมพ์คำถาม เช่น ค่าสมัครเท่าไร" autocomplete="off"><button id="cbSend">ส่ง</button></div>';
+  document.body.appendChild(btn);document.body.appendChild(panel);
+  const body=panel.querySelector('#cbBody'),chips=panel.querySelector('#cbChips'),inp=panel.querySelector('#cbIn');
+  const g=()=>lastD||DATA;
+  const KB=[
+    {k:['ยอด','กี่คน','สมัครแล้วกี่','จำนวนผู้','ล่าสุด','สถิติ','คืบหน้า'],a:()=>{const D=g();const t=D.districts.reduce((s,d)=>s+d.count,0);return 'ตอนนี้มีผู้สมัครแล้ว '+fmt(t)+' คน จากเป้าหมาย 3,000 คน คิดเป็น '+(t/3000*100).toFixed(1)+'% ครับ';}},
+    {k:['อำเภอไหน','อำเภอนำ','นำสูงสุด','มากที่สุด','อันดับอำเภอ'],a:()=>{const D=g();const l=[...D.districts].sort((a,b)=>b.count-a.count)[0]||{};return 'อำเภอที่มีผู้สมัครมากที่สุดคือ '+(l.label||('อำเภอ'+l.name))+' จำนวน '+l.count+' คนครับ';}},
+    {k:['ประเทศ','ระดับประเทศ','อันดับประเทศ'],a:()=>{const D=g();const r=(D.national&&D.national.nbpRank)||'—';return 'หนองบัวลำภูอยู่อันดับที่ '+r+' ของประเทศ (คิดตาม % ของเป้าหมาย) ครับ';}},
+    {k:['เขต 8','เขตสุขภาพ','เขต8'],a:()=>{const D=g();return 'เขตสุขภาพที่ 8 มี 7 จังหวัด ยอดรวม '+fmt(D.region8?D.region8.total:0)+' คนครับ';}},
+    {k:['วันจัด','วันงาน','วันไหน','เมื่อไหร่','กี่โมง','เวลา','จัดวัน'],a:()=>'จัดกิจกรรมวันอาทิตย์ที่ 1 พฤศจิกายน 2569 เวลา 05.00 น. ณ สนามสมเด็จพระนเรศวรมหาราช จังหวัดหนองบัวลำภูครับ'},
+    {k:['เปิดรับ','ปิดรับ','รับสมัครถึง','หมดเขต','สมัครได้ถึง'],a:()=>'เปิดรับสมัครระหว่างวันที่ 4 มิถุนายน – 31 สิงหาคม 2569 ครับ'},
+    {k:['ค่าสมัคร','ราคา','กี่บาท','ค่าใช้จ่าย'],a:()=>'ค่าสมัครครับ: ประชาชนทั่วไป 360 บาท · เยาวชนอายุ 7–18 ปี 240 บาท (รวมค่าจัดส่งแล้ว)'},
+    {k:['ประเภท','ระยะทาง','กี่กม','กิโล','เดินกี่','วิ่งกี่','ปั่นกี่'],a:()=>'มี 3 ประเภทครับ: เดิน 4.5 กม. · วิ่ง 10 กม. · ปั่นจักรยาน 24 กม.'},
+    {k:['วิธีสมัคร','สมัครยังไง','สมัครที่ไหน','สมัครอย่างไร','ลงทะเบียน','สมัคร'],a:()=>'สมัครออนไลน์ได้ที่ wrb12.thai.run/event/NBP หรือกดที่แบนเนอร์/โปสเตอร์ด้านบนของหน้านี้ได้เลยครับ'},
+    {k:['เสื้อ','เหรียญ','ของที่ระลึก','ได้อะไร','รางวัล'],a:()=>'ผู้สมัครจะได้รับเสื้อแข่งขันและเหรียญที่ระลึกของงานครับ'},
+    {k:['สถานที่','ที่ไหน','จัดที่','สนาม'],a:()=>'จัดที่สนามสมเด็จพระนเรศวรมหาราช จังหวัดหนองบัวลำภูครับ'},
+    {k:['ติดต่อ','สอบถามเพิ่ม','โทร','เบอร์','สายด่วน'],a:()=>'สอบถามเพิ่มเติมได้ที่สำนักงานสาธารณสุขจังหวัดหนองบัวลำภู (กลุ่มงานส่งเสริมสุขภาพ) ครับ'}
+  ];
+  function answer(q){const s=String(q||'').toLowerCase();const hit=KB.find(e=>e.k.some(k=>s.includes(k)));return hit?hit.a():'ขออภัยครับ ผมตอบเฉพาะเรื่องกิจกรรม เดิน วิ่ง ปั่น ครั้งที่ 12 หนองบัวลำภู\nลองเลือกจากปุ่มด้านล่าง หรือถามเรื่อง วันจัดงาน / ค่าสมัคร / วิธีสมัคร / ยอดสมัคร ได้ครับ';}
+  function push(text,who){const m=document.createElement('div');m.className='cbMsg '+(who==='user'?'cbUser':'cbBot');m.textContent=text;body.appendChild(m);body.scrollTop=body.scrollHeight;}
+  function ask(q){push(q,'user');setTimeout(()=>push(answer(q),'bot'),260);}
+  [['📊 ยอดสมัครล่าสุด','ยอดสมัครล่าสุด'],['📝 วิธีสมัคร','วิธีสมัคร'],['💰 ค่าสมัคร','ค่าสมัคร'],['📅 วันจัดงาน','วันจัดงาน'],['🏃 ประเภท/ระยะ','ประเภทระยะทาง'],['🏆 อำเภอที่นำ','อำเภอนำ'],['📍 สถานที่','สถานที่'],['👕 เสื้อ/เหรียญ','เสื้อเหรียญ']].forEach(o=>{const c=document.createElement('button');c.className='cbChip';c.textContent=o[0];c.onclick=()=>ask(o[1]);chips.appendChild(c);});
+  btn.onclick=()=>{panel.classList.toggle('open');if(panel.classList.contains('open')&&!body.dataset.greeted){body.dataset.greeted='1';push('สวัสดีครับ 🙏 ผมเป็นผู้ช่วยตอบคำถามกิจกรรม เดิน วิ่ง ปั่น ป้องกันอัมพาต ครั้งที่ 12 จังหวัดหนองบัวลำภู\nเลือกคำถามจากปุ่มด้านล่าง หรือพิมพ์ถามได้เลยครับ','bot');}};
+  panel.querySelector('#cbX').onclick=()=>panel.classList.remove('open');
+  function send(){const v=inp.value.trim();if(!v)return;inp.value='';ask(v);}
+  panel.querySelector('#cbSend').onclick=send;inp.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
+})();
+
 if(liveOn){ render(DATA); loadLive(); setInterval(loadLive,POLL_MS); } else { render(DATA); setBadge(); }
 </script>
 </body>
