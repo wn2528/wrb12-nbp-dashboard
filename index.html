@@ -131,7 +131,13 @@
 
   <h1 class="brandbar">หนองบัวลำภูส่งเสริมสุขภาพดี</h1>
 
-  <!-- HERO / PR banner (คลิกเพื่อสมัคร) -->
+  <!-- แถบปิดรับสมัคร + นับถอยหลังวันงาน -->
+  <div id="evtBar" style="background:linear-gradient(100deg,#0e5a34,#1c8048);color:#fff;border-radius:14px;padding:13px 18px;margin-bottom:14px;text-align:center;font-family:'Noto Sans Thai',sans-serif;box-shadow:0 4px 14px rgba(15,90,52,.25)">
+    <div style="font-size:15px;font-weight:800">🎉 ปิดรับสมัครแล้ว เมื่อ 31 สิงหาคม 2569 · ขอบคุณทุกท่าน</div>
+    <div style="font-size:13.5px;margin-top:3px;color:#dff4e6">แล้วพบกันวันงาน อาทิตย์ที่ 1 พฤศจิกายน 2569 เวลา 05.00 น. · <b id="cd" style="color:#ffe08a">กำลังนับถอยหลัง…</b></div>
+  </div>
+
+  <!-- HERO / PR banner -->
   <div class="hero">
     <a href="https://wrb12.thai.run/event/NBP" target="_blank" rel="noopener" class="heroLink" title="คลิกเพื่อสมัครเข้าร่วมกิจกรรม">
     <img class="bannerImg" src="banner.png" alt="แบนเนอร์กิจกรรม" onerror="this.style.display='none';document.getElementById('heroFb').style.display='flex'">
@@ -144,7 +150,7 @@
       </div>
       <div class="right"><div class="badge" style="background:#ffd34d;color:#7a1212">จังหวัดหนองบัวลำภู</div></div>
     </div>
-    <span class="cta">สมัครเข้าร่วมกิจกรรม →</span>
+    <span class="cta">📅 พบกันวันงาน 1 พ.ย. 2569 →</span>
     </a>
   </div>
 
@@ -160,13 +166,13 @@
   <!-- overall progress to 3000 -->
   <div class="progwrap">
     <div class="head">
-      <div><div class="l">ความคืบหน้าเป้าหมายทั้งจังหวัด</div>
+      <div><div class="l">ยอดผู้สมัครสรุป (ปิดรับสมัครแล้ว)</div>
         <div class="big" id="totNow">— <span>/ 3,000 คน</span></div></div>
       <div class="pct" id="totPct">—</div>
     </div>
     <div class="track"><div class="fill" id="totFill" style="width:0%"></div></div>
     <div class="foot">
-      <span>เหลืออีก <b id="remain">—</b> คน จึงถึงเป้าหมาย</span>
+      <span id="remainMsg">เหลืออีก <b id="remain">—</b> คน จึงถึงเป้าหมาย</span>
       <span>มีผู้สมัครแล้ว <b id="distCount">—</b> จาก 6 อำเภอ</span>
     </div>
   </div>
@@ -259,23 +265,7 @@
 
 <script>
 /* ====== DATA_START (ข้อมูลสำรอง · อัปเดตอัตโนมัติ) ====== */
-const DATA = {
-  updatedText: "—",
-  totalTarget: 3000,
-  districts: [
-    {name:"เมืองหนองบัวลำภู", count:58, target:900, pop:136693},
-    {name:"ศรีบุญเรือง",       count:17, target:500, pop:109388},
-    {name:"นากลาง",           count:4,  target:500, pop:92427},
-    {name:"สุวรรณคูหา",        count:1,  target:400, pop:67887},
-    {name:"โนนสัง",           count:2,  target:400, pop:65035},
-    {name:"นาวัง",            count:3,  target:300, pop:37200}
-  ],
-  activity: [ {name:"เดิน",count:70}, {name:"วิ่ง",count:16}, {name:"ปั่น",count:1} ],
-  daily:    [ {d:"4 มิ.ย.",count:21}, {d:"5 มิ.ย.",count:21} ],
-  national: { total:13011, nbpRank:29, provinceCount:102, nbpCount:88 },
-  region8: { total:817, provinces:[{name:"เลย",count:329},{name:"อุดรธานี",count:238},{name:"หนองบัวลำภู",count:87},{name:"สกลนคร",count:66},{name:"นครพนม",count:55},{name:"หนองคาย",count:42},{name:"บึงกาฬ",count:0}] },
-  youthAdult:[{district:"เมืองหนองบัวลำภู",youth:0},{district:"ศรีบุญเรือง",youth:0},{district:"นากลาง",youth:0},{district:"สุวรรณคูหา",youth:0},{district:"โนนสัง",youth:0},{district:"นาวัง",youth:0},{district:"สมัครมาจากจังหวัดอื่น",youth:1}]
-};
+const DATA = {"updatedText": "31 สิงหาคม 2569 (ปิดรับสมัคร)", "totalTarget": 3000, "districts": [{"name": "เมืองหนองบัวลำภู", "label": "อำเภอเมืองหนองบัวลำภู", "count": 1227, "target": 900, "pop": 136693}, {"name": "ศรีบุญเรือง", "label": "อำเภอศรีบุญเรือง", "count": 385, "target": 500, "pop": 109388}, {"name": "นากลาง", "label": "อำเภอนากลาง", "count": 429, "target": 500, "pop": 92427}, {"name": "สุวรรณคูหา", "label": "อำเภอสุวรรณคูหา", "count": 481, "target": 400, "pop": 67887}, {"name": "โนนสัง", "label": "อำเภอโนนสัง", "count": 409, "target": 400, "pop": 65035}, {"name": "นาวัง", "label": "อำเภอนาวัง", "count": 175, "target": 300, "pop": 37200}, {"name": "สมัครมาจากจังหวัดอื่น", "label": "สมัครมาจากจังหวัดอื่น", "count": 28, "target": 0, "pop": 0}], "activity": [{"name": "เดิน", "count": 2615}, {"name": "วิ่ง", "count": 449}, {"name": "ปั่น", "count": 72}], "daily": [{"d": "4 มิ.ย.", "count": 21}, {"d": "5 มิ.ย.", "count": 21}, {"d": "6 มิ.ย.", "count": 4}, {"d": "7 มิ.ย.", "count": 4}, {"d": "8 มิ.ย.", "count": 53}, {"d": "9 มิ.ย.", "count": 53}, {"d": "10 มิ.ย.", "count": 39}, {"d": "11 มิ.ย.", "count": 18}, {"d": "12 มิ.ย.", "count": 7}, {"d": "14 มิ.ย.", "count": 8}, {"d": "15 มิ.ย.", "count": 4}, {"d": "16 มิ.ย.", "count": 5}, {"d": "17 มิ.ย.", "count": 17}, {"d": "18 มิ.ย.", "count": 6}, {"d": "19 มิ.ย.", "count": 21}, {"d": "20 มิ.ย.", "count": 1}, {"d": "21 มิ.ย.", "count": 3}, {"d": "22 มิ.ย.", "count": 4}, {"d": "23 มิ.ย.", "count": 4}, {"d": "24 มิ.ย.", "count": 4}, {"d": "25 มิ.ย.", "count": 34}, {"d": "26 มิ.ย.", "count": 25}, {"d": "27 มิ.ย.", "count": 1}, {"d": "28 มิ.ย.", "count": 1}, {"d": "29 มิ.ย.", "count": 15}, {"d": "30 มิ.ย.", "count": 6}, {"d": "1 ก.ค.", "count": 15}, {"d": "2 ก.ค.", "count": 4}, {"d": "3 ก.ค.", "count": 9}, {"d": "4 ก.ค.", "count": 2}, {"d": "5 ก.ค.", "count": 4}, {"d": "6 ก.ค.", "count": 8}, {"d": "7 ก.ค.", "count": 11}, {"d": "8 ก.ค.", "count": 7}, {"d": "9 ก.ค.", "count": 24}, {"d": "10 ก.ค.", "count": 16}, {"d": "11 ก.ค.", "count": 11}, {"d": "13 ก.ค.", "count": 10}, {"d": "14 ก.ค.", "count": 36}, {"d": "15 ก.ค.", "count": 13}, {"d": "16 ก.ค.", "count": 27}, {"d": "17 ก.ค.", "count": 44}, {"d": "18 ก.ค.", "count": 5}, {"d": "19 ก.ค.", "count": 6}, {"d": "20 ก.ค.", "count": 5}, {"d": "21 ก.ค.", "count": 6}, {"d": "22 ก.ค.", "count": 11}, {"d": "23 ก.ค.", "count": 25}, {"d": "24 ก.ค.", "count": 8}, {"d": "25 ก.ค.", "count": 4}, {"d": "26 ก.ค.", "count": 8}, {"d": "27 ก.ค.", "count": 27}, {"d": "28 ก.ค.", "count": 10}, {"d": "29 ก.ค.", "count": 40}, {"d": "30 ก.ค.", "count": 1}, {"d": "31 ก.ค.", "count": 7}, {"d": "1 ส.ค.", "count": 7}, {"d": "2 ส.ค.", "count": 1}, {"d": "3 ส.ค.", "count": 14}, {"d": "4 ส.ค.", "count": 40}, {"d": "5 ส.ค.", "count": 6}, {"d": "6 ส.ค.", "count": 15}, {"d": "7 ส.ค.", "count": 29}, {"d": "8 ส.ค.", "count": 8}, {"d": "9 ส.ค.", "count": 6}, {"d": "10 ส.ค.", "count": 39}, {"d": "11 ส.ค.", "count": 14}, {"d": "12 ส.ค.", "count": 29}, {"d": "13 ส.ค.", "count": 55}, {"d": "14 ส.ค.", "count": 93}, {"d": "15 ส.ค.", "count": 11}, {"d": "16 ส.ค.", "count": 16}, {"d": "17 ส.ค.", "count": 105}, {"d": "18 ส.ค.", "count": 88}, {"d": "19 ส.ค.", "count": 94}, {"d": "20 ส.ค.", "count": 84}, {"d": "21 ส.ค.", "count": 47}, {"d": "22 ส.ค.", "count": 20}, {"d": "23 ส.ค.", "count": 10}, {"d": "24 ส.ค.", "count": 85}, {"d": "25 ส.ค.", "count": 130}, {"d": "26 ส.ค.", "count": 293}, {"d": "27 ส.ค.", "count": 345}, {"d": "28 ส.ค.", "count": 148}, {"d": "29 ส.ค.", "count": 26}, {"d": "30 ส.ค.", "count": 41}, {"d": "31 ส.ค.", "count": 454}], "national": {"total": 468470, "nbpRank": 47, "provinceCount": 77, "nbpCount": 3134}, "region8": {"total": 56066, "provinces": [{"name": "อุดรธานี", "count": 27488}, {"name": "สกลนคร", "count": 4091}, {"name": "นครพนม", "count": 5222}, {"name": "เลย", "count": 6344}, {"name": "หนองคาย", "count": 3457}, {"name": "หนองบัวลำภู", "count": 3134}, {"name": "บึงกาฬ", "count": 6330}]}, "youthAdult": []};
 /* ====== DATA_END ====== */
 
 const API_URL = "https://wrb12-data.werayutminer.workers.dev";
@@ -327,8 +317,8 @@ function render(D){
   document.getElementById('updTime').textContent=D.updatedText;
   document.getElementById('totNow').innerHTML=fmt(total)+' <span>/ '+fmt(TT)+' คน</span>';
   document.getElementById('totPct').textContent=pct.toFixed(1)+'%';
-  document.getElementById('totFill').style.width=Math.max(pct,0.6)+'%';
-  document.getElementById('remain').textContent=fmt(TT-total);
+  document.getElementById('totFill').style.width=Math.min(Math.max(pct,0.6),100)+'%';
+  const _rm=document.getElementById('remainMsg'); if(_rm) _rm.innerHTML=(total>=TT?'🎉 เกินเป้าหมาย <b>'+fmt(total-TT)+'</b> คน':'เหลืออีก <b>'+fmt(TT-total)+'</b> คน จึงถึงเป้าหมาย');
   document.getElementById('distCount').textContent=active;
   document.getElementById('kpiTotal').textContent=fmt(total);
   document.getElementById('kpiLeadName').textContent=(lead.label||('อำเภอ'+lead.name));
@@ -539,6 +529,16 @@ function exportSummary(){
 }
 window.exportSummary=exportSummary;
 
+/* ===== นับถอยหลังสู่วันงาน 1 พ.ย. 2569 ===== */
+(function(){
+  const target=new Date(2026,10,1,5,0,0).getTime();
+  function upd(){const el=document.getElementById('cd');if(!el)return;const diff=target-Date.now();
+    if(diff<=0){el.textContent='ถึงวันงานแล้ว! 🎉';return;}
+    const d=Math.floor(diff/86400000),h=Math.floor(diff/3600000)%24,m=Math.floor(diff/60000)%60;
+    el.textContent='อีก '+d+' วัน '+h+' ชม. '+m+' นาที';}
+  upd();setInterval(upd,60000);
+})();
+
 /* ===== แชทบอทป๊อปอัพ (ตอบคำถามอัตโนมัติ + ข้อมูลสด) ===== */
 (function(){
   const S=document.createElement('style');
@@ -575,10 +575,10 @@ window.exportSummary=exportSummary;
     {k:['ประเทศ','ระดับประเทศ','อันดับประเทศ'],a:()=>{const D=g();const r=(D.national&&D.national.nbpRank)||'—';return 'หนองบัวลำภูอยู่อันดับที่ '+r+' ของประเทศ (คิดตาม % ของเป้าหมาย) ครับ';}},
     {k:['เขต 8','เขตสุขภาพ','เขต8'],a:()=>{const D=g();return 'เขตสุขภาพที่ 8 มี 7 จังหวัด ยอดรวม '+fmt(D.region8?D.region8.total:0)+' คนครับ';}},
     {k:['วันจัด','วันงาน','วันไหน','เมื่อไหร่','กี่โมง','เวลา','จัดวัน'],a:()=>'จัดกิจกรรมวันอาทิตย์ที่ 1 พฤศจิกายน 2569 เวลา 05.00 น. ณ สนามสมเด็จพระนเรศวรมหาราช จังหวัดหนองบัวลำภูครับ'},
-    {k:['เปิดรับ','ปิดรับ','รับสมัครถึง','หมดเขต','สมัครได้ถึง'],a:()=>'เปิดรับสมัครระหว่างวันที่ 4 มิถุนายน – 31 สิงหาคม 2569 ครับ'},
+    {k:['เปิดรับ','ปิดรับ','รับสมัครถึง','หมดเขต','สมัครได้ถึง'],a:()=>'ปิดรับสมัครแล้วครับ (เปิดรับระหว่าง 4 มิถุนายน – 31 สิงหาคม 2569) ขณะนี้อยู่ระหว่างเตรียมจัดงาน 1 พ.ย. 2569'},
     {k:['ค่าสมัคร','ราคา','กี่บาท','ค่าใช้จ่าย'],a:()=>'ค่าสมัครครับ: ประชาชนทั่วไป 360 บาท · เยาวชนอายุ 7–18 ปี 240 บาท (รวมค่าจัดส่งแล้ว)'},
     {k:['ประเภท','ระยะทาง','กี่กม','กิโล','เดินกี่','วิ่งกี่','ปั่นกี่'],a:()=>'มี 3 ประเภทครับ: เดิน 4.5 กม. · วิ่ง 10 กม. · ปั่นจักรยาน 24 กม.'},
-    {k:['วิธีสมัคร','สมัครยังไง','สมัครที่ไหน','สมัครอย่างไร','ลงทะเบียน','สมัคร'],a:()=>'สมัครออนไลน์ได้ที่ wrb12.thai.run/event/NBP หรือกดที่แบนเนอร์/โปสเตอร์ด้านบนของหน้านี้ได้เลยครับ'},
+    {k:['วิธีสมัคร','สมัครยังไง','สมัครที่ไหน','สมัครอย่างไร','ลงทะเบียน','สมัคร'],a:()=>'ขณะนี้ปิดรับสมัครแล้วครับ (สิ้นสุด 31 สิงหาคม 2569) ต้องขออภัยด้วย แล้วพบกันในวันงาน 1 พฤศจิกายน 2569 ครับ'},
     {k:['เสื้อ','เหรียญ','ของที่ระลึก','ได้อะไร','รางวัล'],a:()=>'ผู้สมัครจะได้รับเสื้อแข่งขันและเหรียญที่ระลึกของงานครับ'},
     {k:['สถานที่','ที่ไหน','จัดที่','สนาม'],a:()=>'จัดที่สนามสมเด็จพระนเรศวรมหาราช จังหวัดหนองบัวลำภูครับ'},
     {k:['ติดต่อ','สอบถามเพิ่ม','โทร','เบอร์','สายด่วน'],a:()=>'สอบถามเพิ่มเติมได้ที่สำนักงานสาธารณสุขจังหวัดหนองบัวลำภู (กลุ่มงานส่งเสริมสุขภาพ) ครับ'}
