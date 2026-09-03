@@ -327,6 +327,10 @@ function fromLive(live){
   const known=TARGETS.map(t=>t[0]);
   const districts=TARGETS.map(([n,t,p])=>({name:n,label:'อำเภอ'+n,count:rmap[n]||0,target:t,pop:p}));
   (live.districts||[]).forEach(d=>{ if(!known.includes(d.name)) districts.push({name:d.name,label:d.name,count:d.count,target:0,pop:0}); });
+  // ปรับยอดรวมให้ตรงกับยอดจริงของจังหวัด (รายชื่อในระบบ) เผื่อบางรายยังไม่ได้ระบุอำเภอ
+  const _dsum=districts.reduce((s,d)=>s+d.count,0);
+  const _auth=(live.national&&live.national.nbpCount)||_dsum;
+  if(_auth>_dsum){ districts.push({name:'ไม่ระบุอำเภอ',label:'ไม่ระบุอำเภอ',count:_auth-_dsum,target:0,pop:0}); }
   // ให้ยอด "หนองบัวลำภู" ในกราฟเขต 8 ตรงกับยอดรวมจังหวัด (แหล่งเดียวกัน)
   const nbpTotal=districts.reduce((s,d)=>s+d.count,0);
   let region8=live.region8;
