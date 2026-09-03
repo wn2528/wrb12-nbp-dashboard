@@ -194,7 +194,7 @@
 
   <!-- update status -->
   <div class="strip">
-    <div class="upd">ข้อมูล ณ วันปิดรับสมัคร: <b id="updTime">31 สิงหาคม 2569</b></div>
+    <div class="upd">อัปเดตล่าสุด: <b id="updTime">กำลังโหลด…</b></div>
     <div class="right">
       <div class="auto" id="autoBadge" style="color:#1f9d57;background:rgba(31,157,87,.10);border-color:rgba(31,157,87,.35)">✔ ยอดสรุปสุดท้าย (ปิดรับสมัครแล้ว)</div>
     </div>
@@ -335,7 +335,7 @@ function fromLive(live){
     region8={total:provinces.reduce((s,p)=>s+p.count,0),provinces};
   }
   return {
-    updatedText: thStamp(new Date()), totalTarget: 3000, districts,
+    updatedText: thStamp(new Date())+' · ปิดรับสมัครแล้ว', totalTarget: 3000, districts,
     activity: ['เดิน','วิ่ง','ปั่น'].map(n=>({name:n,count:amap[n]||0})),
     daily: (live.daily||[]).map(d=>{const dt=new Date(d.date+'T00:00:00Z');return {d:`${dt.getUTCDate()} ${TH[dt.getUTCMonth()+1]}`,count:d.count};}),
     national: live.national, region8, youthAdult: live.youthAdult
@@ -441,7 +441,7 @@ function setBadge(state){
   const b=document.getElementById('autoBadge'); if(!b)return;
   if(!liveOn){ b.textContent='● ข้อมูลอัปเดตตามรอบเวลา'; b.style.color=C.muted; return; }
   if(state==='loading'){ b.textContent='● กำลังดึงข้อมูลสด…'; b.style.color=C.gold; }
-  else if(state==='ok'){ b.textContent='● ข้อมูลสด · รีเฟรชทุก 60 วินาที'; b.style.color=C.green; }
+  else if(state==='ok'){ b.textContent='✔ ปิดรับสมัครแล้ว · ยอดอัปเดตอัตโนมัติ'; b.style.color=C.green; }
   else { b.textContent='● ต่อข้อมูลสดไม่ได้ (แสดงข้อมูลสำรอง)'; b.style.color=C.red; }
 }
 async function loadLive(){
@@ -634,8 +634,9 @@ window.exportSummary=exportSummary;
   panel.querySelector('#cbSend').onclick=send;inp.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
 })();
 
-/* ปิดรับสมัครแล้ว — แสดงยอดสรุปสุดท้ายจากค่าที่บันทึกไว้ (ไม่ดึงสด เพราะข้อมูลนิ่งแล้ว) */
+/* ปิดรับสมัครแล้ว — แต่ยังดึงสดอัตโนมัติ ให้ยอดตรงกับหลังบ้านเสมอ (มีชำระเงินค้างทยอยยืนยัน) */
 render(DATA);
+if(liveOn){ loadLive(); setInterval(loadLive, POLL_MS); }
 </script>
 </body>
 </html>
