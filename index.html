@@ -192,6 +192,17 @@
     </a>
   </div>
 
+  <!-- เช็กสถานะรับเสื้อ/พัสดุ -->
+  <div id="shipCheck" style="background:#fff;border:1px solid #e5eaf2;border-radius:16px;padding:18px 20px;margin-bottom:14px;font-family:'Noto Sans Thai',sans-serif;box-shadow:0 3px 12px rgba(20,40,80,.06)">
+    <div style="font-size:18px;font-weight:900;color:#0e5a34">👕 เช็กสถานะรับเสื้อ / พัสดุ</div>
+    <div style="font-size:12.5px;color:#6b7280;margin:3px 0 12px">กรอกเลขที่ตั๋ว (อยู่ในอีเมล/หลักฐานการสมัคร) เพื่อตรวจสอบวิธีรับของและสถานะการจัดส่ง</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input id="tkInput" placeholder="เช่น XXZKP5DA" onkeydown="if(event.key==='Enter')checkShip()" style="flex:1;min-width:170px;padding:11px 14px;border:1px solid #cdd7e5;border-radius:10px;font-size:15px;font-family:inherit;text-transform:uppercase">
+      <button id="tkBtn" onclick="checkShip()" style="padding:11px 24px;border:0;border-radius:10px;background:#1c8048;color:#fff;font-size:15px;font-weight:800;cursor:pointer">ตรวจสอบ</button>
+    </div>
+    <div id="tkResult" style="margin-top:12px;font-size:14px"></div>
+  </div>
+
   <!-- update status -->
   <div class="strip">
     <div class="upd">อัปเดตล่าสุด: <b id="updTime">กำลังโหลด…</b></div>
@@ -458,6 +469,23 @@ async function loadLive(){
   }catch(e){ render(DATA); setBadge('err'); }
 }
 function refreshDash(){ liveOn ? loadLive() : location.reload(); }
+async function checkShip(){
+  const el=document.getElementById('tkResult');
+  const t=(document.getElementById('tkInput').value||'').trim().toUpperCase();
+  if(!t){ el.innerHTML='<span style="color:#b45309">กรุณากรอกเลขที่ตั๋ว</span>'; return; }
+  el.innerHTML='<span style="color:#64748b">กำลังตรวจสอบ…</span>';
+  try{
+    const r=await fetch('https://wrb12-report.werayutminer.workers.dev/status?ticket='+encodeURIComponent(t),{cache:'no-store'});
+    const d=await r.json();
+    if(!d.found){ el.innerHTML='<div style="background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;border-radius:10px;padding:12px 14px">ไม่พบเลขที่ตั๋วนี้ กรุณาตรวจสอบอีกครั้ง (ดูจากอีเมลยืนยันการสมัคร)</div>'; return; }
+    const sm={shipping:'📦 จัดส่งไปรษณีย์',ship:'📦 จัดส่งไปรษณีย์',delivery:'📦 จัดส่งไปรษณีย์',onsite:'🏃 รับเองที่งาน',pickup:'🏃 รับเองที่งาน',self:'🏃 รับเองที่งาน',walkin:'🏃 รับเองที่งาน'};
+    const st=sm[String(d.shipType||'').toLowerCase()]||(d.shipType&&d.shipType!=='-'?d.shipType:'—');
+    const status=(d.shipping&&d.shipping!=='-')?d.shipping:'⏳ รอดำเนินการ';
+    el.innerHTML='<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 16px">'
+      +'<div style="font-size:15px;font-weight:800;color:#14345a">'+d.name+'</div>'
+      +'<div style="color:#475569;margin-top:5px;line-height:1.8">อำเภอ: '+d.district+'<br>ประเภทการสมัคร: '+d.type+'<br>วิธีรับของ: '+st+'<br>สถานะจัดส่ง: <b style="color:#0e5a34">'+status+'</b></div></div>';
+  }catch(e){ el.innerHTML='<span style="color:#b91c1c">เกิดข้อผิดพลาด ลองใหม่อีกครั้งครับ</span>'; }
+}
 window.refreshDash=refreshDash;
 
 function showExportOverlay(url,file,fname,cv){
@@ -619,19 +647,20 @@ window.exportSummary=exportSummary;
     {k:['อำเภอไหน','อำเภอนำ','นำสูงสุด','มากที่สุด','อันดับอำเภอ'],a:()=>{const D=g();const l=[...D.districts].sort((a,b)=>b.count-a.count)[0]||{};return 'อำเภอที่มีผู้สมัครมากที่สุดคือ '+(l.label||('อำเภอ'+l.name))+' จำนวน '+l.count+' คนครับ';}},
     {k:['ประเทศ','ระดับประเทศ','อันดับประเทศ'],a:()=>{const D=g();const r=(D.national&&D.national.nbpRank)||'—';return 'หนองบัวลำภูอยู่อันดับที่ '+r+' ของประเทศ (คิดตาม % ของเป้าหมาย) ครับ';}},
     {k:['เขต 8','เขตสุขภาพ','เขต8'],a:()=>{const D=g();return 'เขตสุขภาพที่ 8 มี 7 จังหวัด ยอดรวม '+fmt(D.region8?D.region8.total:0)+' คนครับ';}},
-    {k:['วันจัด','วันงาน','วันไหน','เมื่อไหร่','กี่โมง','เวลา','จัดวัน'],a:()=>'จัดกิจกรรมวันอาทิตย์ที่ 1 พฤศจิกายน 2569 เวลา 05.00 น. ณ สนามสมเด็จพระนเรศวรมหาราช จังหวัดหนองบัวลำภูครับ'},
+    {k:['วันจัด','วันงาน','วันไหน','เมื่อไหร่','กี่โมง','เวลา','จัดวัน','กำหนดการ'],a:()=>'จัดวันอาทิตย์ที่ 1 พฤศจิกายน 2569 ณ สนามสมเด็จพระนเรศวรมหาราช จ.หนองบัวลำภู ครับ · ลงทะเบียน 04.30 น. ปล่อยตัว 05.30 น. (ดูรายละเอียด/แผนที่ได้ที่กล่อง "ข้อมูลวันงาน" ด้านบน)'},
     {k:['เปิดรับ','ปิดรับ','รับสมัครถึง','หมดเขต','สมัครได้ถึง'],a:()=>'ปิดรับสมัครแล้วครับ (เปิดรับระหว่าง 4 มิถุนายน – 31 สิงหาคม 2569) ขณะนี้อยู่ระหว่างเตรียมจัดงาน 1 พ.ย. 2569'},
     {k:['ค่าสมัคร','ราคา','กี่บาท','ค่าใช้จ่าย'],a:()=>'ค่าสมัครครับ: ประชาชนทั่วไป 360 บาท · เยาวชนอายุ 7–18 ปี 240 บาท (รวมค่าจัดส่งแล้ว)'},
     {k:['ประเภท','ระยะทาง','กี่กม','กิโล','เดินกี่','วิ่งกี่','ปั่นกี่'],a:()=>'มี 3 ประเภทครับ: เดิน 4.5 กม. · วิ่ง 10 กม. · ปั่นจักรยาน 24 กม.'},
     {k:['วิธีสมัคร','สมัครยังไง','สมัครที่ไหน','สมัครอย่างไร','ลงทะเบียน','สมัคร'],a:()=>'ขณะนี้ปิดรับสมัครแล้วครับ (สิ้นสุด 31 สิงหาคม 2569) ต้องขออภัยด้วย แล้วพบกันในวันงาน 1 พฤศจิกายน 2569 ครับ'},
     {k:['เสื้อ','เหรียญ','ของที่ระลึก','ได้อะไร','รางวัล'],a:()=>'ผู้สมัครจะได้รับเสื้อแข่งขันและเหรียญที่ระลึกของงานครับ'},
+    {k:['เช็กสถานะ','เช็คสถานะ','สถานะเสื้อ','ได้เสื้อยัง','ส่งเสื้อ','พัสดุ','จัดส่ง','ติดตามพัสดุ','รับเสื้อ','เสื้อส่ง'],a:()=>'เช็กสถานะรับเสื้อ/พัสดุได้ที่กล่อง "👕 เช็กสถานะรับเสื้อ" ด้านบนของหน้านี้ครับ กรอกเลขที่ตั๋ว (อยู่ในอีเมลยืนยันการสมัคร) แล้วกดตรวจสอบ'},
     {k:['สถานที่','ที่ไหน','จัดที่','สนาม'],a:()=>'จัดที่สนามสมเด็จพระนเรศวรมหาราช จังหวัดหนองบัวลำภูครับ'},
     {k:['ติดต่อ','สอบถามเพิ่ม','โทร','เบอร์','สายด่วน'],a:()=>'สอบถามเพิ่มเติมได้ที่สำนักงานสาธารณสุขจังหวัดหนองบัวลำภู (กลุ่มงานส่งเสริมสุขภาพ) ครับ'}
   ];
   function answer(q){const s=String(q||'').toLowerCase();const hit=KB.find(e=>e.k.some(k=>s.includes(k)));return hit?hit.a():'ขออภัยครับ ผมตอบเฉพาะเรื่องกิจกรรม เดิน วิ่ง ปั่น ครั้งที่ 12 หนองบัวลำภู\nลองเลือกจากปุ่มด้านล่าง หรือถามเรื่อง วันจัดงาน / ค่าสมัคร / วิธีสมัคร / ยอดสมัคร ได้ครับ';}
   function push(text,who){const m=document.createElement('div');m.className='cbMsg '+(who==='user'?'cbUser':'cbBot');m.textContent=text;body.appendChild(m);body.scrollTop=body.scrollHeight;}
   function ask(q){push(q,'user');setTimeout(()=>push(answer(q),'bot'),260);}
-  [['📊 ยอดสมัครล่าสุด','ยอดสมัครล่าสุด'],['📝 วิธีสมัคร','วิธีสมัคร'],['💰 ค่าสมัคร','ค่าสมัคร'],['📅 วันจัดงาน','วันจัดงาน'],['🏃 ประเภท/ระยะ','ประเภทระยะทาง'],['🏆 อำเภอที่นำ','อำเภอนำ'],['📍 สถานที่','สถานที่'],['👕 เสื้อ/เหรียญ','เสื้อเหรียญ']].forEach(o=>{const c=document.createElement('button');c.className='cbChip';c.textContent=o[0];c.onclick=()=>ask(o[1]);chips.appendChild(c);});
+  [['📊 ยอดสมัครล่าสุด','ยอดสมัครล่าสุด'],['👕 เช็กสถานะเสื้อ','เช็กสถานะเสื้อ'],['💰 ค่าสมัคร','ค่าสมัคร'],['📅 วันจัดงาน','วันจัดงาน'],['🏃 ประเภท/ระยะ','ประเภทระยะทาง'],['🏆 อำเภอที่นำ','อำเภอนำ'],['📍 สถานที่','สถานที่'],['👕 เสื้อ/เหรียญ','เสื้อเหรียญ']].forEach(o=>{const c=document.createElement('button');c.className='cbChip';c.textContent=o[0];c.onclick=()=>ask(o[1]);chips.appendChild(c);});
   btn.onclick=()=>{panel.classList.toggle('open');if(panel.classList.contains('open')&&!body.dataset.greeted){body.dataset.greeted='1';push('สวัสดีครับ 🙏 ผมเป็นผู้ช่วยตอบคำถามกิจกรรม เดิน วิ่ง ปั่น ป้องกันอัมพาต ครั้งที่ 12 จังหวัดหนองบัวลำภู\nเลือกคำถามจากปุ่มด้านล่าง หรือพิมพ์ถามได้เลยครับ','bot');}};
   panel.querySelector('#cbX').onclick=()=>panel.classList.remove('open');
   function send(){const v=inp.value.trim();if(!v)return;inp.value='';ask(v);}
