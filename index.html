@@ -132,11 +132,11 @@
   <h1 class="brandbar">หนองบัวลำภูส่งเสริมสุขภาพดี</h1>
 
   <!-- แถบปิดรับสมัคร + นับถอยหลังวันงาน -->
-  <div id="evtBar" style="background:linear-gradient(100deg,#0e5a34,#1c8048);color:#fff;border-radius:16px;padding:18px 16px;margin-bottom:14px;text-align:center;font-family:'Noto Sans Thai',sans-serif;box-shadow:0 6px 20px rgba(15,90,52,.3)">
-    <div style="font-size:26px;font-weight:900;letter-spacing:.3px;line-height:1.15">🎉 ปิดรับสมัครแล้ว</div>
-    <div style="font-size:13.5px;margin-top:4px;color:#dff4e6">สิ้นสุดการรับสมัคร 31 สิงหาคม 2569 · ขอบคุณทุกท่าน แล้วพบกันในวันงาน</div>
-    <div style="font-size:13.5px;margin-top:11px;color:#eafff2">⏳ นับถอยหลังสู่วันงาน · อาทิตย์ที่ 1 พฤศจิกายน 2569 (ปล่อยตัว 05.30 น.)</div>
-    <div id="cd" style="font-size:28px;font-weight:900;margin-top:4px;letter-spacing:.5px;color:#ffe08a;font-variant-numeric:tabular-nums">กำลังนับถอยหลัง…</div>
+  <div id="evtBar" style="background:linear-gradient(135deg,#0a4a2a 0%,#136b3d 55%,#1c8048 100%);color:#fff;border-radius:18px;padding:24px 16px 26px;margin-bottom:14px;text-align:center;font-family:'Noto Sans Thai',sans-serif;box-shadow:0 8px 26px rgba(11,74,44,.36)">
+    <div style="font-size:30px;font-weight:900;letter-spacing:.3px;line-height:1.15;text-shadow:0 2px 8px rgba(0,0,0,.28)">🎉 ปิดรับสมัครแล้ว</div>
+    <div style="font-size:14px;margin-top:6px;color:#eafaf0">สิ้นสุดการรับสมัคร 31 สิงหาคม 2569 · ขอบคุณทุกท่าน แล้วพบกันในวันงาน</div>
+    <div style="font-size:15px;margin-top:16px;color:#fff;font-weight:700">⏳ นับถอยหลังสู่วันงาน · อาทิตย์ที่ 1 พฤศจิกายน 2569 (ปล่อยตัว 05.30 น.)</div>
+    <div id="cd" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">กำลังนับถอยหลัง…</div>
   </div>
 
   <!-- ข้อมูลวันงาน -->
@@ -610,13 +610,16 @@ window.exportSummary=exportSummary;
 (function(){
   const target=new Date(2026,10,1,5,30,0).getTime();
   const p=n=>String(n).padStart(2,'0');
+  const box=(n,label)=>'<div style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.28);border-radius:14px;padding:12px 8px 10px;min-width:82px;box-shadow:0 4px 12px rgba(0,0,0,.15)">'
+    +'<div style="font-size:42px;font-weight:900;line-height:1;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 2px 8px rgba(0,0,0,.35)">'+p(n)+'</div>'
+    +'<div style="font-size:13px;margin-top:7px;color:#eafaf0;font-weight:700;letter-spacing:.3px">'+label+'</div></div>';
   function upd(){const el=document.getElementById('cd');if(!el)return;let diff=target-Date.now();
-    if(diff<=0){el.textContent='🎉 ถึงวันงานแล้ว!';return;}
+    if(diff<=0){el.innerHTML='<div style="font-size:28px;font-weight:900;color:#ffe08a;padding:10px">🎉 ถึงวันงานแล้ว!</div>';return;}
     const d=Math.floor(diff/86400000);diff-=d*86400000;
     const h=Math.floor(diff/3600000);diff-=h*3600000;
     const m=Math.floor(diff/60000);diff-=m*60000;
     const s=Math.floor(diff/1000);
-    el.textContent='อีก '+d+' วัน  '+p(h)+' : '+p(m)+' : '+p(s);}
+    el.innerHTML=box(d,'วัน')+box(h,'ชั่วโมง')+box(m,'นาที')+box(s,'วินาที');}
   upd();setInterval(upd,1000);
 })();
 
